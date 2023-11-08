@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "nativo-digital",
     "name": "betapos-mobile-app",
     "slug": "betapos-mobile-app",
     "version": "1.0.0",
@@ -29,11 +30,20 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["sentry-expo"],
     "experiments": {
-      "typedRoutes": true
+      "tsconfigPaths": true
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "nativo-digital",
+            "project": "beta-pos-mobile"
+          }
+        }
+      ]
     }
   }
 }
