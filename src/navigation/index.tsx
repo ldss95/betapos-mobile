@@ -1,4 +1,5 @@
 import React, { Ref } from 'react';
+import { Image, ImageSourcePropType } from 'react-native';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,6 +11,8 @@ import LoginScreen from '@/screens/Auth/Login';
 import HomeScreen from '@/screens/Home';
 import ExpensesScreen from '@/screens/Expenses';
 import ConfigScreen from '@/screens/Config';
+import Colors from '@/constants/Colors';
+import TokenOtpScreen from '@/screens/TokenOTP';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -42,23 +45,76 @@ function RootNavigator() {
 }
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
+const screens: ScreensProps[] = [
+	{
+		name: 'Home',
+		screen: HomeScreen,
+		iconActive: require('@/assets/icons/tab-bar/home-active.png'),
+		iconInactive: require('@/assets/icons/tab-bar/home.png')
+	},
+	{
+		name: 'Expenses',
+		screen: ExpensesScreen,
+		iconActive: require('@/assets/icons/tab-bar/expenses-active.png'),
+		iconInactive: require('@/assets/icons/tab-bar/expenses.png')
+	},
+	{
+		name: 'Token',
+		screen: TokenOtpScreen,
+		iconActive: require('@/assets/icons/tab-bar/token-active.png'),
+		iconInactive: require('@/assets/icons/tab-bar/token.png')
+	},
+	{
+		name: 'Config',
+		screen: ConfigScreen,
+		iconActive: require('@/assets/icons/tab-bar/menu-active.png'),
+		iconInactive: require('@/assets/icons/tab-bar/menu.png')
+	},
+];
 function BottomTabNavigator() {
 	return (
 		<BottomTab.Navigator
 			initialRouteName='Home'
+			screenOptions={{
+				headerShown: false,
+				tabBarStyle: {
+					position: 'absolute',
+					bottom: 20,
+					left: 20,
+					right: 20,
+					borderRadius: 50,
+					backgroundColor: Colors.BgCard,
+					height: 60,
+					paddingBottom: 0
+				},
+				tabBarShowLabel: false
+			}}
 		>
-			<BottomTab.Screen
-				name='Home'
-				component={HomeScreen}
-			/>
-			<BottomTab.Screen
-				name='Expenses'
-				component={ExpensesScreen}
-			/>
-			<BottomTab.Screen
-				name='Config'
-				component={ConfigScreen}
-			/>
+			{screens
+				.map(({ name, iconActive, iconInactive, screen }, index) => (
+					<BottomTab.Screen
+						key={'tab-' + index}
+						name={name}
+						component={screen}
+						options={{
+							tabBarIcon: ({ focused }) => (
+								<Image
+									source={focused ? iconActive : iconInactive}
+									style={{ width: 32, height: 32 }}
+								/>
+							)
+						}}
+					/>
+				))
+			}
 		</BottomTab.Navigator>
 	)
+}
+
+
+interface ScreensProps {
+	name: keyof RootTabParamList;
+	screen: () => React.JSX.Element;
+	iconActive: ImageSourcePropType;
+	iconInactive: ImageSourcePropType;
 }
