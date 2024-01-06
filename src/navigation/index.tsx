@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootStackParamList, RootTabParamList } from '@/types/routes';
 import LinkingConfiguration from './LinkingConfiguration';
 
-import LoginScreen from '@/screens/Login';
+import LoginScreen from '@/screens/Auth/Login';
 import HomeScreen from '@/screens/Home';
 import ExpensesScreen from '@/screens/Expenses';
 import ConfigScreen from '@/screens/Config';
