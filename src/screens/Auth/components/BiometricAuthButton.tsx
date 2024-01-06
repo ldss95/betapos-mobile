@@ -2,11 +2,14 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity, Text, Platform, Image } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { AuthenticationType } from 'expo-local-authentication';
+import * as Sentry from '@sentry/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '@/constants/Colors';
 import { RenderIf } from '@/components';
 
 const BiometricAuthButton = () => {
+	const [token, setToken] = useState<string | null>(null);
 	const [hasBiometric, setHasBiometric] = useState(false);
 	const [type, setType] = useState<AuthenticationType[]>([]);
 	const { name, icon } = useMemo(() => {
@@ -47,16 +50,25 @@ const BiometricAuthButton = () => {
 	}, [type]);
 
 	useEffect(() => {
-		LocalAuthentication
-			.hasHardwareAsync()
-			.then(setHasBiometric);
+		Promise
+			.all([
+				LocalAuthentication.hasHardwareAsync(),
+				LocalAuthentication.isEnrolledAsync()
+			])
+			.then(([hasHardware, isEnrolled]) => setHasBiometric(hasHardware && isEnrolled))
+			.catch(Sentry.captureException);
 
 		LocalAuthentication
 			.supportedAuthenticationTypesAsync()
 			.then(setType)
+			.catch(Sentry.captureException);
+
+		AsyncStorage
+			.getItem('biometric_auth_token')
+			.then(setToken)
 	}, []);
 
-	if (!hasBiometric) {
+	if (!hasBiometric || !token) {
 		return <></>;
 	}
 
