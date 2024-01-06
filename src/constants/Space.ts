@@ -1,3 +1,5 @@
 export default {
-    BorderSm: 8
+    BorderSm: 8,
+    BorderMd: 16,
+    Padding: 20
 }
