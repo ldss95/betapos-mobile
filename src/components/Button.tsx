@@ -3,7 +3,9 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	Text,
-	ActivityIndicator
+	ActivityIndicator,
+	ImageSourcePropType,
+	Image
 } from 'react-native';
 
 import RenderIf from './RenderIf';
@@ -15,17 +17,20 @@ interface ButtonProps {
 	children: string;
 	loading?: boolean;
 	small?: boolean;
+	medium?: boolean;
 	style?: 'rounded' | 'squared',
 	type?: 'primary' | 'secondary'
+	icon?: ImageSourcePropType;
 }
 
-const Button = ({ onPress, children, loading, small, style = 'squared', type }: ButtonProps) => {
+const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium }: ButtonProps) => {
 	return (
 		<TouchableOpacity
 			style={[
 				styles.container,
 				{
 					...small && styles.small,
+					...medium && styles.medium,
 					...style === 'rounded' && styles.rounded,
 					...style === 'squared' && styles.squared,
 					...type === 'primary' && styles.primary,
@@ -34,6 +39,9 @@ const Button = ({ onPress, children, loading, small, style = 'squared', type }: 
 			]}
 			onPress={onPress}
 		>
+			<RenderIf condition={!!icon}>
+				<Image source={icon!} style={{ width: 24, height: 24 }} />
+			</RenderIf>
 			<RenderIf condition={!!loading}>
 				<ActivityIndicator color='#fff' />
 			</RenderIf>
@@ -44,6 +52,10 @@ const Button = ({ onPress, children, loading, small, style = 'squared', type }: 
 						...(small && {
 							fontSize: 12,
 							fontWeight: '300'
+						}),
+						...(medium && {
+							fontSize: 16,
+							fontWeight: 'normal'
 						})
 					}
 				]}
@@ -68,6 +80,11 @@ const styles = StyleSheet.create({
 	small: {
 		paddingHorizontal: 15,
 		height: 33,
+		width: 'auto'
+	},
+	medium: {
+		paddingHorizontal: 15,
+		height: 41,
 		width: 'auto'
 	},
 	rounded: {

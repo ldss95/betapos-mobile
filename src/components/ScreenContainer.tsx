@@ -6,7 +6,7 @@ import Colors from '@/constants/Colors';
 const { height } = Dimensions.get('window');
 
 interface ScreenContainerProps {
-	children?: ReactElement[];
+	children?: ReactElement[] | ReactElement;
 	hasBottomTabs?: boolean;
 	justifySpaceBetween?: boolean;
 }
