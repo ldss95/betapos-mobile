@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useLogin } from '@/hooks/useAuth';
@@ -11,8 +11,8 @@ import { RootStackScreenProps } from '@/types/routes';
 export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
 	const edges = useSafeAreaInsets();
 	const [login, loading, error] = useLogin();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState(__DEV__ ? 'lsantiago@betapos.com.do' : '');
+	const [password, setPassword] = useState(__DEV__ ? '123456' : '');
 
 	useEffect(() => {
 		if (error) {
@@ -40,18 +40,13 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 	}
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: Colors.BgPrimary
-			}}
-		>
+		<View style={styles.container}>
 			<SafeAreaView edges={['top']} />
 			<ScrollView
 				style={{ padding: 20, paddingBottom: edges.bottom }}
-				contentContainerStyle={{ justifyContent: 'space-between', height: '100%', alignItems: 'center' }}
+				contentContainerStyle={styles.body}
 			>
-				<Text style={{ fontSize: 36, fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Bienvenido</Text>
+				<Text style={styles.title}>Bienvenido</Text>
 
 				<Image source={require('@/assets/icons/key-square.png')} style={{ width: 64, height: 64 }} />
 
@@ -62,6 +57,7 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 						autoCapitalize='none'
 						keyboardType='email-address'
 						onChangeText={setEmail}
+						value={email}
 					/>
 
 					<Input
@@ -69,11 +65,12 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 						placeholder='************'
 						autoCapitalize='none'
 						onChangeText={setPassword}
+						value={password}
 						secureTextEntry
 					/>
 
 					<TouchableOpacity onPress={() => navigation.navigate('Login')}>
-						<Text style={{ color: Colors.ColorSecondary, fontSize: 14, textAlign: 'right' }}>¿Olvidaste tu contraseña?</Text>
+						<Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -87,3 +84,26 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.BgPrimary
+	},
+	title: {
+		fontSize: 36,
+		fontWeight: 'bold',
+		color: '#fff',
+		textAlign: 'center'
+	},
+	body: {
+		justifyContent: 'space-between',
+		height: '100%',
+		alignItems: 'center'
+	},
+	forgotPassword: {
+		color: Colors.ColorSecondary,
+		fontSize: 14,
+		textAlign: 'right'
+	}
+});
