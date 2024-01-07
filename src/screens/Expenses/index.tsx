@@ -1,96 +1,78 @@
-import { View, StyleSheet, ScrollView, TextInput, Image, Text } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, StyleSheet, TextInput, Image, Text } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
-import { Button } from '@/components';
+import { Button, ScreenContainer } from '@/components';
 import ExpenseCard from './components/ExpenseCard';
 
 export default function ExpensesScreen() {
 	return (
-		<View style={styles.container}>
-			<SafeAreaView edges={['top']} />
-			<ScrollView
-				style={{ padding: 20 }}
-				contentContainerStyle={styles.body}
-				showsVerticalScrollIndicator={false}
-			>
-				<View style={{ position: 'relative' }}>
-					<Image
-						source={require('@/assets/icons/search.png')}
-						style={styles.searchInputIcon}
-					/>
-					<TextInput
-						placeholder='Buscar'
-						placeholderTextColor='#FFFFFF80'
-						style={styles.searchInput}
-					/>
-				</View>
+		<ScreenContainer hasBottomTabs>
+			<View style={{ position: 'relative' }}>
+				<Image
+					source={require('@/assets/icons/search.png')}
+					style={styles.searchInputIcon}
+				/>
+				<TextInput
+					placeholder='Buscar'
+					placeholderTextColor='#FFFFFF80'
+					style={styles.searchInput}
+				/>
+			</View>
 
-				<View style={styles.summaryCardContainer}>
-					<Text style={styles.summaryCardValue}>$ 86,500</Text>
-					<Text style={styles.summaryCardLabel}>Gastos de hoy</Text>
-				</View>
+			<View style={styles.summaryCardContainer}>
+				<Text style={styles.summaryCardValue}>$ 86,500</Text>
+				<Text style={styles.summaryCardLabel}>Gastos de hoy</Text>
+			</View>
 
-				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
-					<Button small style='rounded' type='secondary'>Hoy</Button>
-					<Button small style='rounded'>Esta semana</Button>
-					<Button small style='rounded'>Este mes</Button>
-				</View>
+			<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
+				<Button small style='rounded' type='secondary'>Hoy</Button>
+				<Button small style='rounded'>Esta semana</Button>
+				<Button small style='rounded'>Este mes</Button>
+			</View>
 
-				<Text style={{ fontWeight: 'bold', fontSize: 18, color: '#FFF' }}>Historial</Text>
+			<Text style={{ fontWeight: 'bold', fontSize: 18, color: '#FFF' }}>Historial</Text>
 
-				<ExpenseCard
-					time={'02:15\nPM'}
-					category='Electricidad'
-					description='Pago EDESUR'
-					amount={16300}
-				/>
-				<ExpenseCard
-					time={'08:16\nAM'}
-					category='Telecomunicaciones'
-					description='Factura de internet claro'
-					amount={2100}
-				/>
-				<ExpenseCard
-					time={'08:00\nAM'}
-					category='Transporte'
-					description='Combustible'
-					amount={5600}
-				/>
-				<ExpenseCard
-					time={'08:00\nAM'}
-					category='Personal'
-					description='Pago de nómina'
-					amount={45000}
-				/>
-				<ExpenseCard
-					time={'08:16\nAM'}
-					category='Telecomunicaciones'
-					description='Factura de claro'
-					amount={2100}
-				/>
-			</ScrollView>
-		</View>
+			<ExpenseCard
+				time={'02:15\nPM'}
+				category='Electricidad'
+				description='Pago EDESUR'
+				amount={16300}
+			/>
+			<ExpenseCard
+				time={'08:16\nAM'}
+				category='Telecomunicaciones'
+				description='Factura de internet claro'
+				amount={2100}
+			/>
+			<ExpenseCard
+				time={'08:00\nAM'}
+				category='Transporte'
+				description='Combustible'
+				amount={5600}
+			/>
+			<ExpenseCard
+				time={'08:00\nAM'}
+				category='Personal'
+				description='Pago de nómina'
+				amount={45000}
+			/>
+			<ExpenseCard
+				time={'08:16\nAM'}
+				category='Telecomunicaciones'
+				description='Factura de claro'
+				amount={2100}
+			/>
+		</ScreenContainer>
 	)
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: Colors.BgPrimary,
-		paddingBottom: 50
-	},
 	title: {
 		fontSize: 36,
 		fontWeight: 'bold',
 		color: '#fff',
 		textAlign: 'center'
-	},
-	body: {
-		minHeight: '100%',
-		paddingBottom: 70,
-		gap: 20
 	},
 	searchInput: {
 		height: 60,

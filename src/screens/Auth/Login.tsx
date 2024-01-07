@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 import { useLogin } from '@/hooks/useAuth';
 import Colors from '@/constants/Colors';
-import { Button, Input } from '@/components';
+import { Button, Input, ScreenContainer } from '@/components';
 import BiometricAuthButton from './components/BiometricAuthButton';
 import { RootStackScreenProps } from '@/types/routes';
 
 export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
-	const edges = useSafeAreaInsets();
 	const [login, loading, error] = useLogin();
 	const [email, setEmail] = useState(__DEV__ ? 'lsantiago@betapos.com.do' : '');
 	const [password, setPassword] = useState(__DEV__ ? '123456' : '');
@@ -40,66 +38,55 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 	}
 
 	return (
-		<View style={styles.container}>
-			<SafeAreaView edges={['top']} />
-			<ScrollView
-				style={{ padding: 20, paddingBottom: edges.bottom }}
-				contentContainerStyle={styles.body}
-			>
-				<Text style={styles.title}>Bienvenido</Text>
+		<ScreenContainer justifySpaceBetween>
+			<Text style={styles.title}>Bienvenido</Text>
 
-				<Image source={require('@/assets/icons/key-square.png')} style={{ width: 64, height: 64 }} />
+			<Image source={require('@/assets/icons/key-square.png')} style={styles.icon} />
 
-				<View style={{ width: '100%', gap: 15 }}>
-					<Input
-						label='Correo Electrónico'
-						placeholder='jdoe@gmail.com'
-						autoCapitalize='none'
-						keyboardType='email-address'
-						onChangeText={setEmail}
-						value={email}
-					/>
+			<View style={{ width: '100%', gap: 15 }}>
+				<Input
+					label='Correo Electrónico'
+					placeholder='jdoe@gmail.com'
+					autoCapitalize='none'
+					keyboardType='email-address'
+					onChangeText={setEmail}
+					value={email}
+				/>
 
-					<Input
-						label='Contraseña'
-						placeholder='************'
-						autoCapitalize='none'
-						onChangeText={setPassword}
-						value={password}
-						secureTextEntry
-					/>
+				<Input
+					label='Contraseña'
+					placeholder='************'
+					autoCapitalize='none'
+					onChangeText={setPassword}
+					value={password}
+					secureTextEntry
+				/>
 
-					<TouchableOpacity onPress={() => navigation.navigate('Login')}>
-						<Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
-					</TouchableOpacity>
-				</View>
+				<TouchableOpacity onPress={() => navigation.navigate('Login')}>
+					<Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
+				</TouchableOpacity>
+			</View>
 
-				<BiometricAuthButton />
+			<BiometricAuthButton />
 
-				<Button onPress={startLogin} loading={loading}>
-					Iniciar Sesión
-				</Button>
-			</ScrollView>
-		</View>
-
+			<Button onPress={startLogin} loading={loading} type='primary'>
+				Iniciar Sesión
+			</Button>
+		</ScreenContainer>
 	)
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: Colors.BgPrimary
-	},
 	title: {
 		fontSize: 36,
 		fontWeight: 'bold',
 		color: '#fff',
 		textAlign: 'center'
 	},
-	body: {
-		justifyContent: 'space-between',
-		height: '100%',
-		alignItems: 'center'
+	icon: {
+		width: 64,
+		height: 64,
+		alignSelf: 'center'
 	},
 	forgotPassword: {
 		color: Colors.ColorSecondary,
