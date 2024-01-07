@@ -92,10 +92,5 @@ const styles = StyleSheet.create({
 	body: {
 		height: '100%',
 		gap: 10
-	},
-	forgotPassword: {
-		color: Colors.ColorSecondary,
-		fontSize: 14,
-		textAlign: 'right'
 	}
 });
