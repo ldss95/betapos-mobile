@@ -85,7 +85,8 @@ function BottomTabNavigator() {
 					borderRadius: 50,
 					backgroundColor: Colors.BgCard,
 					height: 60,
-					paddingBottom: 0
+					paddingBottom: 0,
+					borderTopWidth: 0
 				},
 				tabBarShowLabel: false
 			}}
