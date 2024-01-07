@@ -10,13 +10,12 @@ export default function HomeScreen() {
 	const edges = useSafeAreaInsets();
 
 	return (
-		<View
-			style={styles.container}
-		>
+		<View style={styles.container}>
 			<SafeAreaView edges={['top']} />
 			<ScrollView
-				style={{ padding: 20, paddingBottom: edges.bottom }}
+				style={{ padding: 20 }}
 				contentContainerStyle={styles.body}
+				showsVerticalScrollIndicator={false}
 			>
 				<SalesSummaryCard />
 				<View style={{ height: 10 }} />
@@ -81,7 +80,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.BgPrimary
+		backgroundColor: Colors.BgPrimary,
+		paddingBottom: 50
 	},
 	title: {
 		fontSize: 36,
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	body: {
-		height: '100%',
+		minHeight: '100%',
+		paddingBottom: 70,
 		gap: 10
 	}
 });
