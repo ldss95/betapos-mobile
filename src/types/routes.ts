@@ -12,6 +12,7 @@ export type RootStackParamList = {
 	Loading: undefined;
 	Login: undefined;
 	Root: NavigatorScreenParams<RootTabParamList> | undefined;
+	SaveExpense: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

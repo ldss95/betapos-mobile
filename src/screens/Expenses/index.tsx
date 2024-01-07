@@ -1,23 +1,36 @@
-import { View, StyleSheet, TextInput, Image, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { Button, ScreenContainer } from '@/components';
 import ExpenseCard from './components/ExpenseCard';
+import { RootTabScreenProps } from '@/types/routes';
 
-export default function ExpensesScreen() {
+export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expenses'>) {
 	return (
 		<ScreenContainer hasBottomTabs>
-			<View style={{ position: 'relative' }}>
-				<Image
-					source={require('@/assets/icons/search.png')}
-					style={styles.searchInputIcon}
-				/>
-				<TextInput
-					placeholder='Buscar'
-					placeholderTextColor='#FFFFFF80'
-					style={styles.searchInput}
-				/>
+			<View style={{ flexDirection: 'row', gap: 20 }}>
+				<View style={{ position: 'relative', flex: 1 }}>
+					<Image
+						source={require('@/assets/icons/search.png')}
+						style={styles.searchInputIcon}
+					/>
+					<TextInput
+						placeholder='Buscar'
+						placeholderTextColor='#FFFFFF80'
+						style={styles.searchInput}
+					/>
+				</View>
+
+				<TouchableOpacity
+					style={styles.newExpenseButton}
+					onPress={() => navigation.navigate('SaveExpense')}
+				>
+					<Image
+						source={require('@/assets/icons/add-circle.png')}
+						style={{ width: 36, height: 36 }}
+					/>
+				</TouchableOpacity>
 			</View>
 
 			<View style={styles.summaryCardContainer}>
@@ -108,5 +121,13 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: '#FFFFFF80',
 		textAlign: 'center'
+	},
+	newExpenseButton: {
+		backgroundColor: Colors.ColorPrimary,
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 60,
+		width: 60,
+		borderRadius: Space.BorderMd
 	}
 });

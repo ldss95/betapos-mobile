@@ -10,6 +10,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import LoginScreen from '@/screens/Auth/Login';
 import HomeScreen from '@/screens/Home';
 import ExpensesScreen from '@/screens/Expenses';
+import SaveExpenseScreen from '@/screens/Expenses/SaveExpense';
 import ConfigScreen from '@/screens/Config';
 import Colors from '@/constants/Colors';
 import TokenOtpScreen from '@/screens/TokenOTP';
@@ -38,6 +39,11 @@ function RootNavigator() {
 			<Stack.Screen
 				name='Root'
 				component={BottomTabNavigator}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='SaveExpense'
+				component={SaveExpenseScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
@@ -115,7 +121,7 @@ function BottomTabNavigator() {
 
 interface ScreensProps {
 	name: keyof RootTabParamList;
-	screen: () => React.JSX.Element;
+	screen: any;
 	iconActive: ImageSourcePropType;
 	iconInactive: ImageSourcePropType;
 }
