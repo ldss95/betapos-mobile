@@ -20,7 +20,6 @@ interface ButtonProps {
 }
 
 const Button = ({ onPress, children, loading, small, style = 'squared', type }: ButtonProps) => {
-	console.log(type)
 	return (
 		<TouchableOpacity
 			style={[
