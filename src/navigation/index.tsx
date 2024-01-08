@@ -6,14 +6,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { RootStackParamList, RootTabParamList } from '@/types/routes';
 import LinkingConfiguration from './LinkingConfiguration';
+import Colors from '@/constants/Colors';
 
 import LoginScreen from '@/screens/Auth/Login';
 import HomeScreen from '@/screens/Home';
 import ExpensesScreen from '@/screens/Expenses';
 import SaveExpenseScreen from '@/screens/Expenses/SaveExpense';
 import ConfigScreen from '@/screens/Config';
-import Colors from '@/constants/Colors';
 import TokenOtpScreen from '@/screens/TokenOTP';
+import ProfileScreen from '@/screens/Config/screens/Profile';
+import NotificationsScreen from '@/screens/Config/screens/Notifications';
+import BusinessScreen from '@/screens/Config/screens/Business';
+import BillingScreen from '@/screens/Config/screens/Billing';
+import SecurityAndPasswordScreen from '@/screens/Config/screens/SecurityAndPassword';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -44,6 +49,31 @@ function RootNavigator() {
 			<Stack.Screen
 				name='SaveExpense'
 				component={SaveExpenseScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Profile'
+				component={ProfileScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Notifications'
+				component={NotificationsScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Business'
+				component={BusinessScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Billing'
+				component={BillingScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='SecurityAndPassword'
+				component={SecurityAndPasswordScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
