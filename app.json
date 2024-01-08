@@ -26,6 +26,12 @@
         {
           "faceIDPermission": "Permite que $(PRODUCT_NAME) use Face ID."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permite que $(PRODUCT_NAME) acceda a tus fotos para poder cambiar tu foto de perfil o logo."
+        }
       ]
     ],
     "experiments": {
