@@ -4,32 +4,50 @@ import {
 	StyleSheet,
 	Image,
 	View,
-	ImageSourcePropType
+	ImageSourcePropType,
+	ActivityIndicator
 } from 'react-native';
 import * as Application from 'expo-application';
 import * as WebBrowser from 'expo-web-browser';
 import { WebBrowserPresentationStyle } from 'expo-web-browser';
 
-import { ScreenContainer } from '@/components';
+import { RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootTabScreenProps } from '@/types/routes';
 import { ApiUrl } from '@/constants/Environment';
+import { useSessionStore } from '@/store/session';
+import { useLogout } from '@/hooks/useAuth';
 
 export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'>) {
+	const session = useSessionStore(({ session }) => session);
+	const [logout, loginOut, logoutError] = useLogout();
+
 	return (
 		<ScreenContainer hasBottomTabs>
 			<TouchableOpacity
 				style={styles.profileCardContainer}
 				onPress={() => navigation.navigate('Profile')}
 			>
-				<Image
-					source={{ uri:'https://i.pinimg.com/originals/1b/53/2d/1b532d77ea1fb7c21f2a862fb6ac9318.jpg' }}
-					style={styles.profileImage}
-				/>
+				<RenderIf condition={!!session?.photoUrl}>
+					<Image
+						source={{ uri: session?.photoUrl! }}
+						style={styles.profileImage}
+					/>
+				</RenderIf>
+
+				<RenderIf condition={!session?.photoUrl}>
+					<View style={[styles.profileImage, { opacity: 0.6 }]}>
+						<Text style={{ fontWeight: 'bold', fontSize: 24, color: '#FFF' }}>
+							{session?.firstName?.charAt(0)}
+							{session?.lastName?.charAt(0)}
+						</Text>
+					</View>
+				</RenderIf>
+				
 				<View>
-					<Text style={styles.name}>Jhon Doe</Text>
-					<Text style={styles.email}>jhondoe@demo.com</Text>
+					<Text style={styles.name}>{session?.firstName} {session?.lastName}</Text>
+					<Text style={styles.email}>{session?.email}</Text>
 				</View>
 			</TouchableOpacity>
 
@@ -70,9 +88,24 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 				/>
 			</View>
 
-			<TouchableOpacity style={styles.logoutButton}>
-				<Image source={require('@/assets/icons/config/logout.png')} style={{ width: 24, height: 24 }} />
+			<TouchableOpacity
+				style={styles.logoutButton}
+				onPress={() => logout(
+					() => navigation.reset({
+						index: 0,
+						routes: [{ name: 'Login' as any }]
+					})
+				)}
+			>
+				<Image
+					source={require('@/assets/icons/config/logout.png')}
+					style={{ width: 24, height: 24 }}
+				/>
 				<Text style={styles.optionText}>Cerrar Sesión</Text>
+
+				<RenderIf condition={loginOut}>
+					<ActivityIndicator color='#FFF' />
+				</RenderIf>
 			</TouchableOpacity>
 
 			<Text style={styles.version}>Version {Application.nativeApplicationVersion}</Text>
@@ -120,7 +153,10 @@ const styles = StyleSheet.create({
 	profileImage: {
 		width: 60,
 		height: 60,
-		borderRadius: 30
+		borderRadius: 30,
+		backgroundColor: Colors.ColorSecondary,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	optionsContainer: {
 		padding: 10,
