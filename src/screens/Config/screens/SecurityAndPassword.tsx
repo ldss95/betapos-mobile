@@ -3,11 +3,12 @@ import { TouchableOpacity, Image, Text, View, Dimensions, StyleSheet, ImageSourc
 import { BackButton, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
+import { RootStackScreenProps } from '@/types/routes';
 
 const {  width } = Dimensions.get('screen');
 const ItemSize = (width - 60) / 2;
 
-export default function SecurityAndPasswordScreen() {
+export default function SecurityAndPasswordScreen({ navigation }: RootStackScreenProps<'SecurityAndPassword'>) {
 	return (
 		<ScreenContainer>
 			<BackButton />
@@ -16,6 +17,7 @@ export default function SecurityAndPasswordScreen() {
 				<Item
 					title={'Cambiar\nContraseña'}
 					icon={require('@/assets/icons/password-check.png')}
+					onPress={() => navigation.navigate('ChangePassword')}
 				/>
 				<Item
 					title='Activar Huella'
@@ -38,9 +40,10 @@ interface ItemProps {
 	description?: string;
 	icon: ImageSourcePropType;
 	danger?: boolean;
+	onPress?: () => void;
 }
 
-const Item = ({ title, description, icon, danger }: ItemProps) => (
+const Item = ({ title, description, icon, danger, onPress }: ItemProps) => (
 	<TouchableOpacity
 		style={[
 			styles.itemContainer,
@@ -51,7 +54,7 @@ const Item = ({ title, description, icon, danger }: ItemProps) => (
 				}
 			}
 		]}
-		onPress={() => null}
+		onPress={onPress}
 	>
 		<Image
 			source={icon}

@@ -19,6 +19,7 @@ import NotificationsScreen from '@/screens/Config/screens/Notifications';
 import BusinessScreen from '@/screens/Config/screens/Business';
 import BillingScreen from '@/screens/Config/screens/Billing';
 import SecurityAndPasswordScreen from '@/screens/Config/screens/SecurityAndPassword';
+import ChangePasswordScreen from '@/screens/Config/screens/ChangePassword';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -74,6 +75,11 @@ function RootNavigator() {
 			<Stack.Screen
 				name='SecurityAndPassword'
 				component={SecurityAndPasswordScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='ChangePassword'
+				component={ChangePasswordScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
