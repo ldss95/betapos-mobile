@@ -9,8 +9,7 @@ export default function HomeScreen() {
 	return (
 		<ScreenContainer hasBottomTabs>
 			<SalesSummaryCard />
-			<View style={{ height: 10 }} />
-			<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+			<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 20 }}>
 				<MicroData
 					icon={require('@/assets/icons/status-up.png')}
 					value={7209.45}
@@ -29,7 +28,6 @@ export default function HomeScreen() {
 					label='Por Pagar'
 				/>
 			</View>
-			<View style={{ height: 20 }} />
 			<Text style={{ color: '#FFFFFF80', fontSize: 18 }}>Resumen por turno</Text>
 			<ShiftSummary
 				startedAt='14:00:00'

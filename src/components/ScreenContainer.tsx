@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.BgPrimary,
 	},
 	body: {
-		gap: 10
+		gap: 20
 	}
 });
 
