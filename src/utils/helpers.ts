@@ -1,6 +1,7 @@
 import 'intl';
 import 'intl/locale-data/jsonp/es-DO';
 import { Subject } from 'rxjs';
+import { WebBrowserPresentationStyle } from 'expo-web-browser';
 
 export const Unauthorized$ = new Subject();
 
@@ -9,3 +10,7 @@ export const format = {
 		return Intl.NumberFormat('es-DO', { minimumFractionDigits: decimals }).format(amount)
 	}
 }
+
+export const WebBrowserOptions = {
+	presentationStyle: WebBrowserPresentationStyle.POPOVER
+};

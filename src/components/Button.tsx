@@ -21,9 +21,10 @@ interface ButtonProps {
 	style?: 'rounded' | 'squared',
 	type?: 'primary' | 'secondary'
 	icon?: ImageSourcePropType;
+	borderColor?: string;
 }
 
-const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium }: ButtonProps) => {
+const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium, borderColor }: ButtonProps) => {
 	return (
 		<TouchableOpacity
 			style={[
@@ -34,7 +35,8 @@ const Button = ({ onPress, children, loading, small, style = 'squared', type, ic
 					...style === 'rounded' && styles.rounded,
 					...style === 'squared' && styles.squared,
 					...type === 'primary' && styles.primary,
-					...type === 'secondary' && styles.secondary
+					...type === 'secondary' && styles.secondary,
+					...borderColor && { borderColor }
 				}
 			]}
 			onPress={onPress}

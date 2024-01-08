@@ -3,6 +3,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Sentry from '@sentry/react-native';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { useNavigationContainerRef } from '@react-navigation/native';
+import { locale } from 'dayjs';
+import esLocale from 'dayjs/locale/es-do';
+locale(esLocale);
 
 Sentry.init({
 	dsn: SentryDSN,

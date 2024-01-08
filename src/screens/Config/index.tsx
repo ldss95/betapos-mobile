@@ -18,6 +18,7 @@ import { RootTabScreenProps } from '@/types/routes';
 import { ApiUrl } from '@/constants/Environment';
 import { useSessionStore } from '@/store/session';
 import { useLogout } from '@/hooks/useAuth';
+import { WebBrowserOptions } from '@/utils/helpers';
 
 export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'>) {
 	const session = useSessionStore(({ session }) => session);
@@ -75,16 +76,12 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 				<Option
 					icon={require('@/assets/icons/config/security-user.png')}
 					text='Politicas de Privacidad'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, {
-						presentationStyle: WebBrowserPresentationStyle.POPOVER
-					})}
+					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, WebBrowserOptions)}
 				/>
 				<Option
 					icon={require('@/assets/icons/config/task-square.png')}
 					text='Términos y Condiciones'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, {
-						presentationStyle: WebBrowserPresentationStyle.POPOVER
-					})}
+					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, WebBrowserOptions)}
 				/>
 			</View>
 
