@@ -21,7 +21,7 @@ import { useLogout } from '@/hooks/useAuth';
 
 export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'>) {
 	const session = useSessionStore(({ session }) => session);
-	const [logout, loginOut, logoutError] = useLogout();
+	const [logout, loginOut] = useLogout();
 
 	return (
 		<ScreenContainer hasBottomTabs>
