@@ -1,14 +1,25 @@
-import { TouchableOpacity, Image, Text, View, Dimensions, StyleSheet, ImageSourcePropType } from 'react-native';
+import {
+	TouchableOpacity,
+	Image,
+	Text,
+	View,
+	Dimensions,
+	StyleSheet,
+	ImageSourcePropType,
+} from 'react-native';
 
 import { BackButton, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootStackScreenProps } from '@/types/routes';
+import { useBiometric } from '@/hooks/useBiometric';
 
 const {  width } = Dimensions.get('screen');
 const ItemSize = (width - 60) / 2;
 
 export default function SecurityAndPasswordScreen({ navigation }: RootStackScreenProps<'SecurityAndPassword'>) {
+	const [hasBiometric, biometric, loading, token] = useBiometric(true);
+
 	return (
 		<ScreenContainer>
 			<BackButton />
@@ -19,11 +30,13 @@ export default function SecurityAndPasswordScreen({ navigation }: RootStackScree
 					icon={require('@/assets/icons/password-check.png')}
 					onPress={() => navigation.navigate('ChangePassword')}
 				/>
-				<Item
-					title='Activar Huella'
-					description='Inicia sesión mas fácil y rápido'
-					icon={require('@/assets/icons/finger-scan.png')}
-				/>
+				<RenderIf condition={hasBiometric}>
+					<Item
+						title={`Activar ${biometric?.name}`}
+						description='Inicia sesión mas fácil y rápido'
+						icon={biometric?.icon!}
+					/>
+				</RenderIf>
 				<Item
 					title='Eliminar Cuenta'
 					description='Esta acción es permanente'
