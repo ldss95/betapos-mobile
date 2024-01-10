@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
+import { RenderIf } from '@/components';
 
 interface ShiftSummaryProps {
 	startedAt: string;
@@ -17,10 +18,18 @@ interface ShiftSummaryProps {
 const ShiftSummary = ({ startedAt, amount, seller }: ShiftSummaryProps) => (
     <View style={styles.container}>
 		<View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, width: 170 }}>
-			<Image
-				source={{ uri: seller.photoUrl }}
-				style={styles.sellerPhoto}
-			/>
+			<RenderIf condition={!!seller.photoUrl}>
+				<Image
+					source={{ uri: seller.photoUrl }}
+					style={styles.sellerPhoto}
+				/>
+			</RenderIf>
+
+			<RenderIf condition={!seller.photoUrl}>
+				<View style={[styles.sellerPhoto, { opacity: 0.7 }]}>
+					<Text style={{ color: '#FFF', fontWeight: 'bold', fontSize: 18 }}>{seller.name.charAt(0)}</Text>
+				</View>
+			</RenderIf>
 
 			<Text style={styles.sellerName}>{seller.name}</Text>
 		</View>
@@ -56,7 +65,10 @@ const styles = StyleSheet.create({
 	sellerPhoto: {
 		width: 40,
 		height: 40,
-		borderRadius: 20
+		borderRadius: 20,
+		backgroundColor: Colors.ColorSecondary,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
