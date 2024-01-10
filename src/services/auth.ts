@@ -2,7 +2,7 @@ import { SessionProps } from '@/types/auth';
 import http from '@/utils/http';
 
 export async function login(email: string, password: string) {
-	const { data } = await http.post<{ user: SessionProps }>('/auth/login', {
+	const { data } = await http.post<{ user: SessionProps; token: string; }>('/auth/login', {
 		email,
 		password
 	});

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { login, logout } from '@/services/auth';
 import { useSessionStore } from '@/store/session';
@@ -18,8 +19,9 @@ export const useLogin = (): UseLoginType => {
 	async function handleLogin(email: string, password: string, onDone?: () => void) {
 		try {
 			setLoading(true);
-			const { user } = await login(email, password);
+			const { user, token } = await login(email, password);
 			setSession(user);
+			await AsyncStorage.setItem('token', token);
 			onDone && onDone();
 		} catch (error) {
 			setError(error as AxiosError<{ message: string }>);
