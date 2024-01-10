@@ -29,9 +29,9 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 				contentContainerStyle={[
 					styles.body,
 					{
-						minHeight: height - edges.top - edges.bottom - 80,
+						flexGrow: 1,
 						...(justifySpaceBetween && { justifyContent: 'space-between' }),
-						...(!hasBottomTabs && { paddingBottom: edges.bottom + 20 }),
+						...(!hasBottomTabs && { paddingBottom: edges.bottom }),
 						...(hasBottomTabs && { paddingBottom: 70 })
 					}
 				]}
