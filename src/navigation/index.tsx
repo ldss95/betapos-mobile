@@ -20,6 +20,9 @@ import BusinessScreen from '@/screens/Config/screens/Business';
 import BillingScreen from '@/screens/Config/screens/Billing';
 import SecurityAndPasswordScreen from '@/screens/Config/screens/SecurityAndPassword';
 import ChangePasswordScreen from '@/screens/Config/screens/ChangePassword';
+import ForgotPasswordScreen from '@/screens/Auth/ForgottenPassword';
+import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
+import ResetPasswordScreen from '@/screens/Auth/ResetPassword';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -80,6 +83,21 @@ function RootNavigator() {
 			<Stack.Screen
 				name='ChangePassword'
 				component={ChangePasswordScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='ForgotPassword'
+				component={ForgotPasswordScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='VerifyResetPasswordCode'
+				component={VerifyResetPasswordCodeScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='ResetPassword'
+				component={ResetPasswordScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

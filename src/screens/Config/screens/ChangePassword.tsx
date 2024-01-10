@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 
-import { BackButton, Input, ScreenContainer } from '@/components';
+import { BackButton, Button, Input, ScreenContainer } from '@/components';
 
 export default function ChangePasswordScreen() {
 	return (
@@ -11,6 +11,10 @@ export default function ChangePasswordScreen() {
 			<Input label='Contraseña Actual' />
 			<Input label='Nueva contraseña' />
 			<Input label='Confirmar nueva contraseña' />
+
+			<Button type='primary'>
+				Guardar contraseña
+			</Button>
 		</ScreenContainer>
 	)
 }
