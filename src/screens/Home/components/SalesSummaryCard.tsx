@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Text } from 'react-native';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
+import { format } from '@/utils/helpers';
 import Skeleton from '@/components/Skeleton';
 
 interface SalesSummaryCardProps {
@@ -17,7 +18,10 @@ const SalesSummaryCard = ({ amount, loading }: SalesSummaryCardProps) => {
 
 			<View style={styles.header}>
 				<View style={styles.headerTitleContainer}>
-					<Image source={require('@/assets/icons/receipt-item.png')} style={styles.headerIcon} />
+					<Image
+						source={require('@/assets/icons/receipt-item.png')}
+						style={styles.headerIcon}
+					/>
 					<Text style={styles.headerTitle}>Ventas</Text>
 				</View>
 
@@ -26,9 +30,12 @@ const SalesSummaryCard = ({ amount, loading }: SalesSummaryCardProps) => {
 				</View>
 			</View>
 
-			<Text style={styles.total}>$ 43,256.75</Text>
+			<Text style={styles.total}>$ {format.cash(amount)}</Text>
 
-			<Image source={require('@/assets/images/statistic-line.png')} style={styles.statisticLine} />
+			<Image
+				source={require('@/assets/images/statistic-line.png')}
+				style={styles.statisticLine}
+			/>
 			<View style={styles.statisticLineBase} />
 		</View>
 	)
@@ -39,7 +46,9 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.BgCard,
 		borderRadius: Space.BorderMd,
 		width: '100%',
-		padding: Space.Padding
+		padding: Space.Padding,
+		overflow: 'hidden',
+		position: 'relative'
 	},
 	header: {
 		flexDirection: 'row',
