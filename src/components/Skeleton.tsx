@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Animated, LayoutChangeEvent } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -8,34 +8,45 @@ interface SkeletonProps {
 }
 
 const Skeleton = ({ active }: SkeletonProps) =>  {
-	const translateX = useRef<Animated.Value | undefined>();
-	const animation = useRef<Animated.CompositeAnimation | undefined>();
-
+	const [translateX, setTranslateX] = useState<Animated.Value | undefined>();
+	const [animation, setAnimation] = useState<Animated.CompositeAnimation | undefined>();
+	const [width, setWidth] = useState<number | undefined>();
+	
 	useEffect(() => {
-		if (!animation.current) {
+		if (!animation) {
 			return;
 		}
 
 		if (active) {
-			animation.current.start();
+			animation.start();
 		} else {
-			animation.current.stop();
+			animation.stop();
 		}
-	}, [active]);
+
+		return () => animation?.stop();
+	}, [active, animation]);
+
+	useEffect(() => {
+		if (!width || ! translateX) {
+			return;
+		}
+
+		setAnimation(
+			Animated.loop(
+				Animated.timing(translateX, {
+					toValue: width,
+					useNativeDriver: true,
+					duration: 1000
+				})
+			)
+		);
+	}, [translateX, width]);
 
 	function handleLayoutChange({ nativeEvent }: LayoutChangeEvent) {
 		const { width } = nativeEvent.layout;
-
-		translateX.current = new Animated.Value(
-			width * -1
-		);
-
-		animation.current = Animated.loop(
-			Animated.timing(translateX.current, {
-				toValue: width,
-				useNativeDriver: true,
-				duration: 1000
-			})
+		setWidth(width);
+		setTranslateX(
+			new Animated.Value(width * -1)
 		);
 	}
 
@@ -61,8 +72,8 @@ const Skeleton = ({ active }: SkeletonProps) =>  {
 				style={{
 					width: '100%',
 					height: '100%',
-					...(translateX.current && {
-						transform: [{ translateX: translateX.current }]
+					...(translateX && {
+						transform: [{ translateX }]
 					})
 				}}
 			>
