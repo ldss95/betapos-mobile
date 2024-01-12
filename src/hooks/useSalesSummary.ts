@@ -14,6 +14,7 @@ interface SummaryProps {
     profitsAmount: number;
     salesAmount: number;
     salesQty: number;
+	percentDiff: number;
 }
 
 type UseSalesSummaryType = [

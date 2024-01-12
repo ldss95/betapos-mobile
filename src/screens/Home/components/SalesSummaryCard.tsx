@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 
 import Space from '@/constants/Space';
@@ -8,10 +8,11 @@ import Skeleton from '@/components/Skeleton';
 
 interface SalesSummaryCardProps {
 	amount: number;
+	diff: number;
 	loading: boolean;
 }
 
-const SalesSummaryCard = ({ amount, loading }: SalesSummaryCardProps) => {
+const SalesSummaryCard = ({ amount, loading, diff }: SalesSummaryCardProps) => {
 	return (
 		<View style={styles.container}>
 			<Skeleton active={loading} />
@@ -26,7 +27,7 @@ const SalesSummaryCard = ({ amount, loading }: SalesSummaryCardProps) => {
 				</View>
 
 				<View style={styles.comparisonContainer}>
-					<Text style={styles.comparisonText}>+ 16%</Text>
+					<Text style={styles.comparisonText}>{diff > 0 ? '+' : ''}{Math.round(diff)}%</Text>
 				</View>
 			</View>
 

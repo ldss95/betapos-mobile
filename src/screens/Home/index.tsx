@@ -15,6 +15,7 @@ export default function HomeScreen() {
 		<ScreenContainer hasBottomTabs>
 			<SalesSummaryCard
 				amount={data?.salesAmount || 0}
+				diff={data?.percentDiff || 0}
 				loading={loadingSummary}
 			/>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 20 }}>
