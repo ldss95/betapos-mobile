@@ -1,21 +1,26 @@
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 
 import SalesSummaryCard from './components/SalesSummaryCard';
 import MicroData from './components/MicroData';
 import ShiftSummary from './components/ShiftSummary';
-import { ScreenContainer } from '@/components';
+import { RenderIf, ScreenContainer } from '@/components';
 import { useFetchShifts } from '@/hooks/useShifts';
+import { useSalesSummary } from '@/hooks/useSalesSummary';
 
 export default function HomeScreen() {
-	const [shifts, loading, error, reload] = useFetchShifts();
+	const [shifts, loadingShifts, error, reload] = useFetchShifts();
+	const [data, loadingSummary] = useSalesSummary();
 
 	return (
 		<ScreenContainer hasBottomTabs>
-			<SalesSummaryCard />
+			<SalesSummaryCard
+				amount={data?.salesAmount || 0}
+				loading={loadingSummary}
+			/>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 20 }}>
 				<MicroData
 					icon={require('@/assets/icons/status-up.png')}
-					value={7209.45}
+					value={data?.profitsAmount || 0}
 					label='Ganancias'
 				/>
 
@@ -32,6 +37,10 @@ export default function HomeScreen() {
 				/>
 			</View>
 			<Text style={{ color: '#FFFFFF80', fontSize: 18 }}>Resumen por turno</Text>
+
+			<RenderIf condition={loadingShifts}>
+				<ActivityIndicator color='#FFF' />
+			</RenderIf>
 			
 			<View style={{ gap: 20 }}>
 				{shifts

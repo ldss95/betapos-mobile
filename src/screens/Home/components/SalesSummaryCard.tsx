@@ -3,10 +3,18 @@ import { View, StyleSheet, Image, Text } from 'react-native';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
+import Skeleton from '@/components/Skeleton';
 
-const SalesSummaryCard = () => {
+interface SalesSummaryCardProps {
+	amount: number;
+	loading: boolean;
+}
+
+const SalesSummaryCard = ({ amount, loading }: SalesSummaryCardProps) => {
 	return (
 		<View style={styles.container}>
+			<Skeleton active={loading} />
+
 			<View style={styles.header}>
 				<View style={styles.headerTitleContainer}>
 					<Image source={require('@/assets/icons/receipt-item.png')} style={styles.headerIcon} />
