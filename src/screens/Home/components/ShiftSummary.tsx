@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
 import { RenderIf } from '@/components';
+import Skeleton from '@/components/Skeleton';
 
 interface ShiftSummaryProps {
 	startedAt: string;
@@ -12,11 +13,14 @@ interface ShiftSummaryProps {
 	seller:{
 		name: string;
 		photoUrl?: string;
-	}
+	};
+	loading?: boolean;
 }
 
-const ShiftSummary = ({ startedAt, amount, seller }: ShiftSummaryProps) => (
+const ShiftSummary = ({ startedAt, amount, seller, loading }: ShiftSummaryProps) => (
     <View style={styles.container}>
+		<Skeleton active={!!loading} />
+
 		<View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, width: 170 }}>
 			<RenderIf condition={!!seller.photoUrl}>
 				<Image
@@ -47,7 +51,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		borderWidth: 1,
 		borderColor: Colors.BgCard,
-		padding: 10
+		padding: 10,
+		overflow: 'hidden'
 	},
 	amount: {
 		color: '#FFF',

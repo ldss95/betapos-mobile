@@ -43,6 +43,28 @@ export default function HomeScreen() {
 			</RenderIf>
 			
 			<View style={{ gap: 20 }}>
+				<RenderIf condition={shifts.length === 0 && loadingShifts}>
+					<ShiftSummary
+						startedAt='08:00:00'
+						amount={0}
+						seller={{ name: 'Fulano' }}
+						loading
+					/>
+
+					<ShiftSummary
+						startedAt='08:00:00'
+						amount={0}
+						seller={{ name: 'Fulano' }}
+						loading
+					/>
+
+					<ShiftSummary
+						startedAt='08:00:00'
+						amount={0}
+						seller={{ name: 'Fulano' }}
+						loading
+					/>
+				</RenderIf>
 				{shifts
 					.map(({ id, startTime, totalSold, user }) => (
 						<ShiftSummary
