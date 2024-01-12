@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 
 import SalesSummaryCard from './components/SalesSummaryCard';
 import MicroData from './components/MicroData';
@@ -39,10 +39,6 @@ export default function HomeScreen() {
 			</View>
 			<Text style={{ color: '#FFFFFF80', fontSize: 18 }}>Resumen por turno</Text>
 
-			<RenderIf condition={loadingShifts}>
-				<ActivityIndicator color='#FFF' />
-			</RenderIf>
-			
 			<View style={{ gap: 20 }}>
 				<RenderIf condition={shifts.length === 0 && loadingShifts}>
 					<ShiftSummary
