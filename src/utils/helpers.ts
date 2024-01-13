@@ -7,7 +7,10 @@ export const Unauthorized$ = new Subject();
 
 export const format = {
 	cash: (amount: number, decimals: 0 | 1 | 2 = 0) => {
-		return Intl.NumberFormat('es-DO', { minimumFractionDigits: decimals }).format(amount)
+		return Intl.NumberFormat('es-DO', {
+			minimumFractionDigits: decimals,
+			maximumFractionDigits: decimals
+		}).format(amount)
 	}
 }
 
