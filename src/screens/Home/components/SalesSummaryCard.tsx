@@ -31,7 +31,7 @@ const SalesSummaryCard = ({ amount, loading, diff }: SalesSummaryCardProps) => {
 				</View>
 			</View>
 
-			<Text style={styles.total}>$ {format.cash(amount)}</Text>
+			<Text style={styles.total}>$ {format.cash(amount, 2)}</Text>
 
 			<Image
 				source={require('@/assets/images/statistic-line.png')}

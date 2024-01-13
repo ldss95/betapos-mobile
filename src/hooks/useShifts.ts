@@ -9,7 +9,7 @@ type UseFetchShiftsType = [
 	ShiftProps[],
 	boolean,
 	ApiError | null,
-	() => void
+	(showLoading?: boolean) => void
 ]
 
 export const useFetchShifts = (): UseFetchShiftsType => {
@@ -21,9 +21,11 @@ export const useFetchShifts = (): UseFetchShiftsType => {
 		load();
 	}, []);
 
-	async function load() {
+	async function load(showLoading = true) {
 		try {
-			setLoading(true);
+			if (showLoading) {
+				setLoading(true);
+			}
 			setError(null);
 			const { data } = await fetchShifts(dayjs().format('YYYY-MM-DD'));
 			setShifts(data);
