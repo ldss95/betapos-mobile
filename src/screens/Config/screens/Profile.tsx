@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -7,10 +8,12 @@ import {
 	Text
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import dayjs from 'dayjs';
 
 import {
 	BackButton,
 	Button,
+	Select,
 	Input,
 	RenderIf,
 	ScreenContainer
@@ -22,6 +25,7 @@ const { width } = Dimensions.get('screen');
 
 export default function ProfileScreen() {
 	const session = useSessionStore(({ session }) => session);
+	const [modifiedUserData, setModifiedUserData] = useState<{ [key: string]: any }>({});
 
 	async function openCamera() {
 		const { granted } = await ImagePicker.requestCameraPermissionsAsync();
@@ -61,28 +65,48 @@ export default function ProfileScreen() {
 
 			<Input
 				label='Nombres'
+				defaultValue={session?.firstName}
+				autoCapitalize='words'
+				onChangeText={(firstName) => setModifiedUserData({ ...modifiedUserData, firstName })}
 			/>
 
 			<Input
 				label='Apellidos'
+				defaultValue={session?.lastName}
+				autoCapitalize='words'
+				onChangeText={(lastName) => setModifiedUserData({ ...modifiedUserData, lastName })}
 			/>
 
 			<Input
 				label='Correo Electrónico'
+				defaultValue={session?.email}
+				keyboardType='email-address'
+				autoCapitalize='none'
+				onChangeText={(email) => setModifiedUserData({ ...modifiedUserData, email })}
 			/>
 
 			<Input
 				label='Nombre de Usuario'
+				autoCapitalize='none'
+				defaultValue={session?.nickName}
+				onChangeText={(nickName) => setModifiedUserData({ ...modifiedUserData, nickName })}
 			/>
 
 			<Input
 				label='Fecha de Nacimiento'
+				defaultValue={session?.birthDate ? dayjs(session.birthDate).format('DD MMM YYYY') : ''}
 			/>
 
-			<Input
+			<Select
+				options={[
+					{ label: 'Masculino', value: 'M' },
+					{ label: 'Femenino', value: 'F' },
+					{ label: 'Otro', value: 'O' }
+				]}
 				label='Genero'
+				defaultValues={session?.gender ? [session.gender] : []}
+				onDone={([gender]) => setModifiedUserData({ ...modifiedUserData, gender })}
 			/>
-			
 			<Button type='primary'>
 				Guardar
 			</Button>
