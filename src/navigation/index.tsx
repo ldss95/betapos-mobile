@@ -3,6 +3,7 @@ import { Image, ImageSourcePropType } from 'react-native';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Host } from 'react-native-portalize';
 
 import { RootStackParamList, RootTabParamList } from '@/types/routes';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -30,7 +31,9 @@ interface NavigationProps {
 export default function Navigation({ navRef }: NavigationProps) {
 	return (
 		<NavigationContainer linking={LinkingConfiguration} ref={navRef}>
-			<RootNavigator />
+			<Host>
+				<RootNavigator />
+			</Host>
 		</NavigationContainer>
 	);
 }
