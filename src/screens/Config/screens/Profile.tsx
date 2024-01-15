@@ -16,7 +16,8 @@ import {
 	Select,
 	Input,
 	RenderIf,
-	ScreenContainer
+	ScreenContainer,
+	DatePicker
 } from '@/components';
 import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
@@ -92,9 +93,13 @@ export default function ProfileScreen() {
 				onChangeText={(nickName) => setModifiedUserData({ ...modifiedUserData, nickName })}
 			/>
 
-			<Input
+			<DatePicker
 				label='Fecha de Nacimiento'
-				defaultValue={session?.birthDate ? dayjs(session.birthDate).format('DD MMM YYYY') : ''}
+				value={modifiedUserData?.birthDate || session?.birthDate}
+				onChange={(birthDate) => setModifiedUserData({
+					...modifiedUserData,
+					birthDate
+				})}
 			/>
 
 			<Select
