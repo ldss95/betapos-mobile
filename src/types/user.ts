@@ -18,3 +18,18 @@ export interface UserProps {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface UpdateProfileParams {
+	id: string;
+	photo?: {
+		base64: string;
+		type: string;
+		name: string;
+	};
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+	nickName?: string;
+	birthDate?: string;
+	gender?: 'F' | 'M' | 'O';
+}

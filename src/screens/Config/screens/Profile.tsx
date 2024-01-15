@@ -21,12 +21,17 @@ import {
 } from '@/components';
 import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
+import { UpdateProfileParams } from '@/types/user';
+import { useUpdateProfile } from '@/hooks/useUsers';
 
 const { width } = Dimensions.get('screen');
 
 export default function ProfileScreen() {
 	const session = useSessionStore(({ session }) => session);
-	const [modifiedUserData, setModifiedUserData] = useState<{ [key: string]: any }>({});
+	const [updateProfile, loading, error] = useUpdateProfile();
+	const [modifiedUserData, setModifiedUserData] = useState<UpdateProfileParams>({
+		id: ''
+	});
 
 	async function openCamera() {
 		const { granted } = await ImagePicker.requestCameraPermissionsAsync();
@@ -34,16 +39,42 @@ export default function ProfileScreen() {
 			return;
 		}
 
-		await ImagePicker.launchCameraAsync();
+		const { canceled, assets } = await ImagePicker.launchCameraAsync({
+			base64: true,
+			quality: 0.5,
+			mediaTypes: ImagePicker.MediaTypeOptions.Images
+		});
+
+		if (canceled) {
+			return;
+		}
+
+		const [{ base64 }] = assets;
+		if (!base64) {
+			return;
+		}
+
+		setModifiedUserData({
+			...modifiedUserData,
+			photo: {
+				base64,
+				type: 'image/png',
+				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.png`
+			}
+		})
 	}
 
 	return (
 		<ScreenContainer>
 			<BackButton />
 			<View style={styles.photoContainer}>
-				<RenderIf condition={!!session?.photoUrl}>
+				<RenderIf condition={!!modifiedUserData?.photo || !!session?.photoUrl}>
 					<Image
-						source={{ uri: session?.photoUrl! }}
+						source={{
+							uri: (modifiedUserData.photo)
+								? `data:image/jpeg;base64,${modifiedUserData.photo.base64}`
+								: session?.photoUrl!
+						}}
 						style={styles.photo}
 					/>
 				</RenderIf>
@@ -110,9 +141,21 @@ export default function ProfileScreen() {
 				]}
 				label='Genero'
 				defaultValues={session?.gender ? [session.gender] : []}
-				onDone={([gender]) => setModifiedUserData({ ...modifiedUserData, gender })}
+				onDone={([gender]) => setModifiedUserData({
+					...modifiedUserData,
+					gender: gender as 'F' | 'M' | 'O'
+				})}
 			/>
-			<Button type='primary'>
+			<Button
+				type='primary'
+				loading={loading}
+				onPress={() => {
+					updateProfile(
+						{ ...modifiedUserData, id: session?.id! },
+						() => alert('Perfil actualizado')
+					);
+				}}
+			>
 				Guardar
 			</Button>
 		</ScreenContainer>
