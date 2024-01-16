@@ -1,6 +1,6 @@
 import { BlurView } from 'expo-blur';
-import { ReactElement, memo, useEffect, useState } from 'react';
-import { Modal, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { ReactElement, memo, useEffect, useMemo, useState } from 'react';
+import { Modal, View, Text, Image, StyleSheet, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { Subject } from 'rxjs';
 
 import Colors from '@/constants/Colors';
@@ -8,7 +8,7 @@ import RenderIf from './RenderIf';
 import Button from './Button';
 
 interface AlertProps {
-	type: 'success' | 'error';
+	type: 'success' | 'error' | 'warning';
 	title: string;
 	description: string | ReactElement;
 	showCancelButton?: boolean;
@@ -22,6 +22,25 @@ const Alert$ = new Subject<AlertProps>();
 const Alert = () => {
 	const [visible, setVisible] = useState(false);
 	const [config, setConfig] = useState<AlertProps | null>(null);
+	const icon: ImageSourcePropType = useMemo(() => {
+		if (!config?.type) {
+			return {
+				uri: ''
+			}
+		}
+
+		if (config.type === 'error') {
+			return require('@/assets/icons/error.png')
+		}
+
+		if (config.type === 'warning') {
+			return require('@/assets/icons/warning.png')
+		}
+
+		if (config.type === 'success') {
+			return require('@/assets/icons/success.png')
+		}
+	}, [config?.type]);
 
 	useEffect(() => {
 		const listener = Alert$
@@ -46,19 +65,16 @@ const Alert = () => {
 					</TouchableOpacity>
 
 					<Image
-						source={
-							(config?.type === 'error')
-								? require('@/assets/icons/error.png')
-								: require('@/assets/icons/success.png')
-						}
+						source={icon}
 						style={styles.icon}
 					/>
 					<Text
 						style={[
-							styles.title, {
-								...(config?.type === 'error' && {
-									color: '#C32A2A'
-								})
+							styles.title,
+							{
+								...config?.type === 'error' && styles.textError,
+								...config?.type === 'success' && styles.textSuccess,
+								...config?.type === 'warning' && styles.textWarning,
 							}
 						]}
 					>
@@ -111,10 +127,19 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	title: {
-		color: '#38B72D',
+		color: '#FFF',
 		fontSize: 20,
 		fontWeight: 'bold',
 		textAlign: 'center'
+	},
+	textWarning: {
+		color: Colors.ColorWarning
+	},
+	textError: {
+		color: Colors.ColorError
+	},
+	textSuccess: {
+		color: Colors.ColorSuccess
 	},
 	description: {
 		color: '#FFF',
