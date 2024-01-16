@@ -23,6 +23,7 @@ import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
 import { UpdateProfileParams } from '@/types/user';
 import { useUpdateProfile } from '@/hooks/useUsers';
+import { showAlert } from '@/components/Alert';
 
 const { width } = Dimensions.get('screen');
 
@@ -62,6 +63,14 @@ export default function ProfileScreen() {
 				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.png`
 			}
 		})
+	}
+
+	function afterUpdate() {
+		showAlert({
+			title: 'Genial!',
+			type: 'success',
+			description: 'Tu perfil ha sido actualizado.'
+		});
 	}
 
 	return (
@@ -152,7 +161,7 @@ export default function ProfileScreen() {
 				onPress={() => {
 					updateProfile(
 						{ ...modifiedUserData, id: session?.id! },
-						() => alert('Perfil actualizado')
+						afterUpdate
 					);
 				}}
 			>

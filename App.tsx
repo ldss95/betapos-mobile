@@ -19,6 +19,7 @@ import { RootStackParamList } from '@/types/routes';
 import { SentryDSN } from '@/constants/Environment';
 import { Unauthorized$ } from '@/utils/helpers';
 import { useSessionStore } from '@/store/session';
+import { Alert } from '@/components';
 
 function App() {
 	const navigation = useNavigationContainerRef<RootStackParamList>();
@@ -47,6 +48,7 @@ function App() {
 	return (
 		<SafeAreaProvider>
 			<Navigation navRef={navigation} />
+			<Alert />
 		</SafeAreaProvider>
 	);
 }
