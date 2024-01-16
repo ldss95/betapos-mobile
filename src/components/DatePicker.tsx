@@ -1,10 +1,20 @@
 import { memo, useState } from 'react';
-import { Modal, TouchableOpacity, Image, Text } from 'react-native';
+import {
+	Modal,
+	TouchableOpacity,
+	Image,
+	Text,
+	Platform,
+	StyleSheet,
+	View
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { BlurView } from 'expo-blur';
 import dayjs from 'dayjs';
 
-import Input from './Input';
+import RenderIf from './RenderIf';
+import Colors from '@/constants/Colors';
+import Space from '@/constants/Space';
 
 interface DatePickerProps {
 	value?: string;
@@ -17,12 +27,19 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 
 	return (
 		<>
-			<Input
-				label={label}
-				defaultValue={value ? dayjs(value).format('DD MMM YYYY') : ''}
-				onPressIn={() => setShowPicker(true)}
-				editable={false}
-			/>
+			<View>
+				<Text style={styles.label}>
+					{label}
+				</Text>
+				<TouchableOpacity
+					style={styles.input}
+					onPress={() => setShowPicker(true)}
+				>
+					<Text style={styles.value}>
+						{value ? dayjs(value).format('DD MMM YYYY') : ''}
+					</Text>
+				</TouchableOpacity>
+			</View>
 
 			<Modal
 				visible={showPicker}
@@ -30,7 +47,9 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 				transparent
 			>
 				<BlurView style={{ height: '100%', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
-					<Text style={{ color: '#FFF', fontSize: 20 }}>Selecciona una fecha</Text>
+					<RenderIf condition={Platform.OS === 'ios'}>
+						<Text style={{ color: '#FFF', fontSize: 20 }}>Selecciona una fecha</Text>
+					</RenderIf>
 
 					<DateTimePicker
 						value={value ? dayjs(value).toDate() : new Date()}
@@ -41,25 +60,49 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 							onChange && onChange(date?.toISOString().substring(0, 10));
 							setShowPicker(false);
 						}}
+						onTouchCancel={() => setShowPicker(false)}
 					/>
 
-					<TouchableOpacity
-						style={{
-							width: 60,
-							height: 60,
-							backgroundColor: 'grey',
-							borderRadius: 30,
-							justifyContent: 'center',
-							alignItems: 'center'
-						}}
-						onPress={() => setShowPicker(false)}
-					>
-						<Image source={require('@/assets/icons/arrow-left.png')} style={{ width: 40, height: 40 }} />
-					</TouchableOpacity>
+					<RenderIf condition={Platform.OS === 'ios'}>
+						<TouchableOpacity
+							style={styles.closeBtn}
+							onPress={() => setShowPicker(false)}
+						>
+							<Image source={require('@/assets/icons/arrow-left.png')} style={{ width: 40, height: 40 }} />
+						</TouchableOpacity>
+					</RenderIf>
 				</BlurView>
 			</Modal>
 		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	label: {
+		fontSize: 14,
+		color: 'rgba(255, 255, 255, 0.8)',
+		marginLeft: 12,
+		marginBottom: 12
+	},
+	input: {
+		backgroundColor: Colors.BgCard,
+		borderRadius: Space.BorderSm,
+		height: 60,
+		paddingHorizontal: 20,
+		justifyContent: 'center'
+	},
+	value: {
+		color: '#fff',
+		fontSize: 18
+	},
+	closeBtn: {
+		width: 60,
+		height: 60,
+		backgroundColor: 'grey',
+		borderRadius: 30,
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
+});
 
 export default memo(DatePicker);
