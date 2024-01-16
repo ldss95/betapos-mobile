@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Modal } from 'react-native';
+import { Modal, TouchableOpacity, Image, Text } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { BlurView } from 'expo-blur';
 import dayjs from 'dayjs';
@@ -26,9 +26,12 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 
 			<Modal
 				visible={showPicker}
+				animationType='slide'
 				transparent
 			>
-				<BlurView style={{ height: '100%', justifyContent: 'center' }}>
+				<BlurView style={{ height: '100%', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
+					<Text style={{ color: '#FFF', fontSize: 20 }}>Selecciona una fecha</Text>
+
 					<DateTimePicker
 						value={value ? dayjs(value).toDate() : new Date()}
 						display='inline'
@@ -39,6 +42,20 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 							setShowPicker(false);
 						}}
 					/>
+
+					<TouchableOpacity
+						style={{
+							width: 60,
+							height: 60,
+							backgroundColor: 'grey',
+							borderRadius: 30,
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}
+						onPress={() => setShowPicker(false)}
+					>
+						<Image source={require('@/assets/icons/arrow-left.png')} style={{ width: 40, height: 40 }} />
+					</TouchableOpacity>
 				</BlurView>
 			</Modal>
 		</>
