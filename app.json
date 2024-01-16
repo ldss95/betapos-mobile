@@ -9,7 +9,8 @@
     "scheme": "betapos",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/splash.png"
+      "image": "./src/assets/images/splash.png",
+	  "resizeMode": "cover"
     },
     "assetBundlePatterns": [
       "**/*"
