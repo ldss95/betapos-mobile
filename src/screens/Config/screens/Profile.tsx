@@ -24,6 +24,7 @@ import Colors from '@/constants/Colors';
 import { UpdateProfileParams } from '@/types/user';
 import { useUpdateProfile } from '@/hooks/useUsers';
 import { showAlert } from '@/components/Alert';
+import useErrorHandling from '@/hooks/useError';
 
 const { width } = Dimensions.get('screen');
 
@@ -33,6 +34,7 @@ export default function ProfileScreen() {
 	const [modifiedUserData, setModifiedUserData] = useState<UpdateProfileParams>({
 		id: ''
 	});
+	useErrorHandling(error);
 
 	async function changeProfilePhoto() {
 		const { granted } = await ImagePicker.requestCameraPermissionsAsync();

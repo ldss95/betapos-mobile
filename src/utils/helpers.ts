@@ -17,3 +17,11 @@ export const format = {
 export const WebBrowserOptions = {
 	presentationStyle: WebBrowserPresentationStyle.POPOVER
 };
+
+export function extractTitleAndDescriptionFromErrorMessage(message: string) {
+	try {
+		return JSON.parse(message);
+	} catch (error) {
+		return ['Error desconocido', message];
+	}
+}
