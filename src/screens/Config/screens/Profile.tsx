@@ -34,7 +34,7 @@ export default function ProfileScreen() {
 		id: ''
 	});
 
-	async function openCamera() {
+	async function changeProfilePhoto() {
 		const { granted } = await ImagePicker.requestCameraPermissionsAsync();
 		if (!granted) {
 			return;
@@ -96,7 +96,7 @@ export default function ProfileScreen() {
 						</Text>
 					</View>
 				</RenderIf>
-				<TouchableOpacity style={styles.changeLogoButton} onPress={openCamera}>
+				<TouchableOpacity style={styles.changeLogoButton} onPress={changeProfilePhoto}>
 					<Image
 						source={require('@/assets/icons/edit-image.png')}
 						style={{ height: 24, width: 24 }}
