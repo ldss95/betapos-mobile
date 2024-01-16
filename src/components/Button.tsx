@@ -18,24 +18,27 @@ interface ButtonProps {
 	loading?: boolean;
 	small?: boolean;
 	medium?: boolean;
+	auto?: boolean;
 	style?: 'rounded' | 'squared',
-	type?: 'primary' | 'secondary'
+	type?: 'primary' | 'secondary' | 'error'
 	icon?: ImageSourcePropType;
 	borderColor?: string;
 }
 
-const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium, borderColor }: ButtonProps) => {
+const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium, borderColor, auto }: ButtonProps) => {
 	return (
 		<TouchableOpacity
 			style={[
 				styles.container,
 				{
+					...auto && { flex: 1 },
 					...small && styles.small,
 					...medium && styles.medium,
 					...style === 'rounded' && styles.rounded,
 					...style === 'squared' && styles.squared,
 					...type === 'primary' && styles.primary,
 					...type === 'secondary' && styles.secondary,
+					...type === 'error' && styles.error,
 					...borderColor && { borderColor }
 				}
 			]}
@@ -101,6 +104,10 @@ const styles = StyleSheet.create({
 	},
 	secondary: {
 		backgroundColor: Colors.ColorSecondary,
+		borderWidth: 0
+	},
+	error: {
+		backgroundColor: '#C32A2A',
 		borderWidth: 0
 	},
 	text: {

@@ -5,3 +5,4 @@ export { default as ScreenContainer } from './ScreenContainer';
 export { default as BackButton } from './BackButton';
 export { default as Select } from './Select';
 export { default as DatePicker } from './DatePicker';
+export { default as Alert } from './Alert';
