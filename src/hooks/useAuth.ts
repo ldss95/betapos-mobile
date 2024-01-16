@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { login, logout } from '@/services/auth';
+import { changePassword, login, logout } from '@/services/auth';
 import { useSessionStore } from '@/store/session';
 
 type UseLoginType = [
@@ -58,4 +58,29 @@ export const useLogout = (): UseLogoutType => {
 	}
 
 	return [handleLogout, loading, error];
+}
+
+type UseChangePasswordType = [
+	(oldPassword: string, newPassword: string, onDone?: () => void) => void,
+	boolean,
+	AxiosError<{ message: string }> | null
+];
+
+export const useChangePassword = (): UseLoginType => {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<AxiosError<{ message: string }> | null>(null);
+
+	async function handleChangePassword(oldPassword: string, newPassword: string, onDone?: () => void) {
+		try {
+			setLoading(true);
+			await changePassword(oldPassword, newPassword);
+			onDone && onDone();
+		} catch (error) {
+			setError(error as AxiosError<{ message: string }>);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return [handleChangePassword, loading, error];
 }

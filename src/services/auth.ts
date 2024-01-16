@@ -13,3 +13,10 @@ export async function login(email: string, password: string) {
 export async function logout() {
 	await http.post('/auth/logout');
 }
+
+export async function changePassword(oldPassword: string, newPassword: string) {
+	await http.post('/auth/change-password', {
+		oldPassword,
+		newPassword
+	});
+}
