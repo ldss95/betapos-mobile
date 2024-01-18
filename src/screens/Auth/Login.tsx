@@ -1,30 +1,42 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useLogin } from '@/hooks/useAuth';
 import Colors from '@/constants/Colors';
 import { Button, Input, ScreenContainer } from '@/components';
 import BiometricAuthButton from './components/BiometricAuthButton';
 import { RootStackScreenProps } from '@/types/routes';
+import useErrorHandling from '@/hooks/useError';
+import { showAlert } from '@/components/Alert';
 
 export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
 	const [login, loading, error] = useLogin();
-	const [email, setEmail] = useState(__DEV__ ? 'lsantiago@betapos.com.do' : '');
-	const [password, setPassword] = useState(__DEV__ ? '123456' : '');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	useErrorHandling(error);
 
 	useEffect(() => {
-		if (error) {
-			alert(error.response?.data.message);
-		}
-	}, [error]);
+		AsyncStorage
+			.getItem('last_user_email')
+			.then((email) => email && setEmail(email));
+	}, []);
 
 	function startLogin() {
 		if (email === '') {
-			return alert('Ingrese su correo electronico');
+			return showAlert({
+				type: 'warning',
+				title: 'Ingrese su correo electronico',
+				description: ''
+			});
 		}
 
 		if (password === '') {
-			return alert('Ingrese su correo electronico');
+			return showAlert({
+				type: 'warning',
+				title: 'Ingrese su contraseña',
+				description: ''
+			});
 		}
 
 		login(

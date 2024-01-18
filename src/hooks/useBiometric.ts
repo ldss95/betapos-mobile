@@ -10,9 +10,11 @@ type UseBiometricType = [
 	{
 		name: string;
 		icon: ImageSourcePropType;
+		type?: AuthenticationType;
 	} | null,
 	boolean,
-	string | null
+	string | null,
+	() => void
 ]
 
 export const useBiometric = (useWhite?: boolean): UseBiometricType => {
@@ -28,7 +30,8 @@ export const useBiometric = (useWhite?: boolean): UseBiometricType => {
 		if (Platform.OS === 'ios' && type.includes(AuthenticationType.FACIAL_RECOGNITION)) {
 			return {
 				name: 'Face ID',
-				icon: useWhite ? require('@/assets/icons/face-id-white.png') : require('@/assets/icons/face-id.png')
+				icon: useWhite ? require('@/assets/icons/face-id-white.png') : require('@/assets/icons/face-id.png'),
+				type: type[0]
 			};
 		}
 
@@ -42,14 +45,16 @@ export const useBiometric = (useWhite?: boolean): UseBiometricType => {
 		if (Platform.OS === 'ios' && type.includes(AuthenticationType.FINGERPRINT)) {
 			return {
 				name: 'Touch ID',
-				icon: useWhite ? require('@/assets/icons/touch-id-white.png') : require('@/assets/icons/touch-id.png')
+				icon: useWhite ? require('@/assets/icons/touch-id-white.png') : require('@/assets/icons/touch-id.png'),
+				type: type[0]
 			};
 		}
 
 		if (Platform.OS === 'android' && type.includes(AuthenticationType.FINGERPRINT)) {
 			return {
 				name: 'Huella dactilar',
-				icon: useWhite ? require('@/assets/icons/fingerprint-white.png') : require('@/assets/icons/fingerprint.png')
+				icon: useWhite ? require('@/assets/icons/fingerprint-white.png') : require('@/assets/icons/fingerprint.png'),
+				type: type[0]
 			};
 		}
 
@@ -57,6 +62,10 @@ export const useBiometric = (useWhite?: boolean): UseBiometricType => {
 	}, [type]);
 
 	useEffect(() => {
+		load();
+	}, []);
+
+	function load() {
 		setLoading(true);
 		Promise
 			.all([
@@ -72,7 +81,7 @@ export const useBiometric = (useWhite?: boolean): UseBiometricType => {
 			})
 			.catch(Sentry.captureException)
 			.finally(() => setLoading(false));
-	}, []);
+	}
 
-	return [hasBiometric, biometric, loading, token];
+	return [hasBiometric, biometric, loading, token, load];
 }

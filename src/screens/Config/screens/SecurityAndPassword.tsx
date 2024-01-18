@@ -6,19 +6,25 @@ import {
 	Dimensions,
 	StyleSheet,
 	ImageSourcePropType,
+	ActivityIndicator,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 import { BackButton, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootStackScreenProps } from '@/types/routes';
 import { useBiometric } from '@/hooks/useBiometric';
+import { useToggleBiometricAuth } from '@/hooks/useAuth';
+import useErrorHandling from '@/hooks/useError';
 
 const {  width } = Dimensions.get('screen');
 const ItemSize = (width - 60) / 2;
 
 export default function SecurityAndPasswordScreen({ navigation }: RootStackScreenProps<'SecurityAndPassword'>) {
-	const [hasBiometric, biometric, loading, token] = useBiometric(true);
+	const [hasBiometric, biometric, _, token, reload] = useBiometric(true);
+	const [toggleBiometricAuth, loading, error] = useToggleBiometricAuth();
+	useErrorHandling(error);
 
 	return (
 		<ScreenContainer>
@@ -32,9 +38,11 @@ export default function SecurityAndPasswordScreen({ navigation }: RootStackScree
 				/>
 				<RenderIf condition={hasBiometric}>
 					<Item
-						title={`Activar ${biometric?.name}`}
+						title={`${token ? 'Desactivar': 'Activar'} ${biometric?.name}`}
 						description='Inicia sesión mas fácil y rápido'
 						icon={biometric?.icon!}
+						onPress={() => toggleBiometricAuth(biometric?.type!, reload)}
+						loading={loading}
 					/>
 				</RenderIf>
 				<Item
@@ -53,10 +61,11 @@ interface ItemProps {
 	description?: string;
 	icon: ImageSourcePropType;
 	danger?: boolean;
+	loading?: boolean;
 	onPress?: () => void;
 }
 
-const Item = ({ title, description, icon, danger, onPress }: ItemProps) => (
+const Item = ({ title, description, icon, danger, onPress, loading }: ItemProps) => (
 	<TouchableOpacity
 		style={[
 			styles.itemContainer,
@@ -69,6 +78,12 @@ const Item = ({ title, description, icon, danger, onPress }: ItemProps) => (
 		]}
 		onPress={onPress}
 	>
+		<RenderIf condition={!!loading}>
+			<BlurView intensity={15} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+				<ActivityIndicator color='#FFF' size='large' />
+			</BlurView>
+		</RenderIf>
+
 		<Image
 			source={icon}
 			style={{ height: 56, width: 56 }}
@@ -100,7 +115,8 @@ const styles = StyleSheet.create({
 		height: ItemSize,
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingVertical: 30
+		paddingVertical: 30,
+		overflow: 'hidden'
 	},
 	itemTitle: {
 		color: '#FFF',

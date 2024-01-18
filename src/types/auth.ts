@@ -15,3 +15,11 @@ export interface SessionProps {
 }
 
 export type RoleCode = 'ADMIN' | 'BIOWNER' | 'SELLER' | 'PARTNER' | 'SUPPORT';
+
+export enum BiometricAuthTokenType {
+	FaceId = 'FACE_ID',
+	TouchId = 'TOUCH_ID',
+	Fingerprint = 'FINGERPRINT',
+	FaceUnlock = 'FACE_UNLOCK'
+}
+
