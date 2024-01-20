@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { Animated, LayoutChangeEvent } from 'react-native';
+import { ActivityIndicator, Animated, LayoutChangeEvent, Platform, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
@@ -11,9 +11,9 @@ const Skeleton = ({ active }: SkeletonProps) =>  {
 	const [translateX, setTranslateX] = useState<Animated.Value | undefined>();
 	const [animation, setAnimation] = useState<Animated.CompositeAnimation | undefined>();
 	const [width, setWidth] = useState<number | undefined>();
-	
+
 	useEffect(() => {
-		if (!animation) {
+		if (!animation || Platform.OS === 'android') {
 			return;
 		}
 
@@ -51,7 +51,27 @@ const Skeleton = ({ active }: SkeletonProps) =>  {
 	}
 
 	if (!active) {
-		return <></>;
+		return null;
+	}
+
+	if (Platform.OS === 'android') {
+		return (
+			<View
+				style={{
+					position: 'absolute',
+					justifyContent: 'center',
+					alignItems: 'center',
+					backgroundColor: 'rgba(0, 0, 0, 0.7)',
+					top: 0,
+					bottom: 0,
+					left: 0,
+					right: 0,
+					zIndex: 100
+				}}
+			>
+				<ActivityIndicator color='#FFF' size='large' />
+			</View>
+		)
 	}
 
 	return (
