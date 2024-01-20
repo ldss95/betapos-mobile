@@ -10,3 +10,7 @@ export async function updateProfile(profile: UpdateProfileParams) {
 	const { data } = await http.post<{ photoUrl: string; }>('/users/set-profile-image-base64', profile.photo);
 	return data.photoUrl;
 }
+
+export async function deleteMyAccount(id: string) {
+	await http.delete(`/users/${id}`);
+}

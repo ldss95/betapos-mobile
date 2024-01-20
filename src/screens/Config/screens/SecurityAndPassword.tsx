@@ -17,6 +17,8 @@ import { RootStackScreenProps } from '@/types/routes';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useToggleBiometricAuth } from '@/hooks/useAuth';
 import useErrorHandling from '@/hooks/useError';
+import { showAlert } from '@/components/Alert';
+import { useDeleteMyAccount } from '@/hooks/useUsers';
 
 const {  width } = Dimensions.get('screen');
 const ItemSize = (width - 60) / 2;
@@ -24,7 +26,28 @@ const ItemSize = (width - 60) / 2;
 export default function SecurityAndPasswordScreen({ navigation }: RootStackScreenProps<'SecurityAndPassword'>) {
 	const [hasBiometric, biometric, _, token, reload] = useBiometric(true);
 	const [toggleBiometricAuth, loading, error] = useToggleBiometricAuth();
-	useErrorHandling(error);
+	const [deleteAccount, deleting, deleteError] = useDeleteMyAccount();
+	useErrorHandling(error || deleteError);
+
+	function handleDeleteAccount() {
+		showAlert({
+			type: 'warning',
+			title: 'Advertencia!',
+			description: (
+				<Text style={{ color: '#FFF' }}>
+					Si presionas <Text style={{ fontWeight: 'bold' }}>Eliminar!</Text>, tu cuenta y sus datos serán eliminado permanentemente, esta acción no se puede revertir.
+				</Text>
+			),
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Eliminar',
+			showCancelButton: true,
+			showConfirmButton: true,
+			onConfirm: () => deleteAccount(() => navigation.reset({
+				index: 0,
+				routes: [{ name: 'Login' }]
+			}))
+		});
+	}
 
 	return (
 		<ScreenContainer>
@@ -49,6 +72,8 @@ export default function SecurityAndPasswordScreen({ navigation }: RootStackScree
 					title='Eliminar Cuenta'
 					description='Esta acción es permanente'
 					icon={require('@/assets/icons/danger.png')}
+					onPress={handleDeleteAccount}
+					loading={deleting}
 					danger
 				/>
 			</View>

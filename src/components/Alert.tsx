@@ -15,6 +15,8 @@ interface AlertProps {
 	cancelButtonText?: string;
 	showConfirmButton?: boolean;
 	confirmButtonText?: string;
+	onCancel?: () => void;
+	onConfirm?: () => void;
 }
 
 const Alert$ = new Subject<AlertProps>();
@@ -85,12 +87,28 @@ const Alert = () => {
 					<RenderIf condition={!!config?.showCancelButton || !!config?.showConfirmButton}>
 						<View style={{ flexDirection: 'row', marginTop: 20, gap: 20 }}>
 							<RenderIf condition={!!config?.showCancelButton}>
-								<Button borderColor={Colors.ColorPrimary} auto medium>
+								<Button
+									borderColor={Colors.ColorPrimary}
+									onPress={() => {
+										config?.onCancel && config.onCancel();
+										setVisible(false)
+									}}
+									auto
+									medium
+								>
 									{config?.cancelButtonText || ''}
 								</Button>
 							</RenderIf>
 							<RenderIf condition={!!config?.showConfirmButton}>
-								<Button auto type='error' medium>
+								<Button
+									type='error'
+									onPress={() => {
+										config?.onConfirm && config.onConfirm();
+										setVisible(false)
+									}}
+									auto
+									medium
+								>
 									{config?.confirmButtonText || ''}
 								</Button>
 							</RenderIf>
