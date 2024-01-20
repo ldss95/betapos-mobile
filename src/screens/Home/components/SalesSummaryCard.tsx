@@ -1,10 +1,10 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
-import Skeleton from '@/components/Skeleton';
+import { Skeleton } from '@/components';
 
 interface SalesSummaryCardProps {
 	amount: number;

@@ -1,27 +1,71 @@
 import { Text, StyleSheet } from 'react-native';
 
-import { BackButton, ScreenContainer } from '@/components';
+import { BackButton, RenderIf, ScreenContainer } from '@/components';
 import PendingInvoiceCard from '../components/PendingInvoiceCard';
 import Receipt from '../components/Receipt';
+import { useFetchAllBills } from '@/hooks/useBilling';
+import useErrorHandling from '@/hooks/useError';
 
 export default function BillingScreen() {
+	const [bills, loading, error] = useFetchAllBills();
+	useErrorHandling(error);
+
 	return (
 		<ScreenContainer>
 			<BackButton />
 			<Text style={styles.title}>Tus Facturas</Text>
 
-			<PendingInvoiceCard
-				amount={1000}
-				date='2023-12-28'
-				invoiceNumber='INV-123456'
-				paymentLink='https://google.com.do'
-				invoiceUrl='https://google.com.do'
-			/>
+			<RenderIf condition={loading && bills.length === 0}>
+				<PendingInvoiceCard
+					amount={0}
+					date=''
+					invoiceNumber=''
+					paymentLink=''
+					invoiceUrl=''
+					loading
+				/>
 
-			<Receipt amount={1000} date='2023-11-28' receiptUrl='https://google.com.do' />
-			<Receipt amount={1000} date='2023-10-28' receiptUrl='https://google.com.do' />
-			<Receipt amount={1000} date='2023-09-28' receiptUrl='https://google.com.do' />
-			<Receipt amount={1000} date='2023-08-28' receiptUrl='https://google.com.do' />
+				<Receipt
+					amount={0}
+					date=''
+					receiptUrl=''
+					invoiceNumber=''
+					loading
+				/>
+			</RenderIf>
+
+			<>
+				{bills
+					.filter(({ payed }) => !payed)
+					.map(({ id, amount, createdAt, stripePayUrl, orderNumber, invoicePdfUrl }) => (
+						<PendingInvoiceCard
+							key={id}
+							amount={amount}
+							date={createdAt}
+							invoiceNumber={orderNumber}
+							paymentLink={stripePayUrl!}
+							invoiceUrl={invoicePdfUrl!}
+							loading={loading}
+						/>
+					))
+				}
+			</>
+
+			<>
+				{bills
+					.filter(({ payed }) => payed)
+					.map(({ id, amount, createdAt, transferVoucherUrl, receiptPdfUrl, orderNumber }) => (
+						<Receipt
+							key={id}
+							amount={amount}
+							date={createdAt}
+							receiptUrl={receiptPdfUrl || transferVoucherUrl}
+							invoiceNumber={orderNumber}
+							loading={loading}
+						/>
+					))
+				}
+			</>
 		</ScreenContainer>
 	)
 }

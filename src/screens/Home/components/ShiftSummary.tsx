@@ -4,8 +4,7 @@ import dayjs from 'dayjs';
 
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
-import { RenderIf } from '@/components';
-import Skeleton from '@/components/Skeleton';
+import { RenderIf, Skeleton } from '@/components';
 
 interface ShiftSummaryProps {
 	startedAt: string;
