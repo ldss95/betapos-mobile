@@ -1,10 +1,10 @@
 import { memo } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import dayjs from 'dayjs';
 
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
-import { RenderIf, Skeleton } from '@/components';
+import { Skeleton, Avatar } from '@/components';
 
 interface ShiftSummaryProps {
 	startedAt: string;
@@ -21,18 +21,11 @@ const ShiftSummary = ({ startedAt, amount, seller, loading }: ShiftSummaryProps)
 		<Skeleton active={!!loading} />
 
 		<View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, width: 170 }}>
-			<RenderIf condition={!!seller.photoUrl}>
-				<Image
-					source={{ uri: seller.photoUrl }}
-					style={styles.sellerPhoto}
-				/>
-			</RenderIf>
-
-			<RenderIf condition={!seller.photoUrl}>
-				<View style={[styles.sellerPhoto, { opacity: 0.7 }]}>
-					<Text style={{ color: '#FFF', fontWeight: 'bold', fontSize: 18 }}>{seller.name.charAt(0)}</Text>
-				</View>
-			</RenderIf>
+			<Avatar
+				url={seller.photoUrl}
+				size={40}
+				placeholderLabel={seller.name.charAt(0)}
+			/>
 
 			<Text style={styles.sellerName}>{seller.name}</Text>
 		</View>
@@ -65,14 +58,6 @@ const styles = StyleSheet.create({
 	sellerName: {
 		color: '#FFF',
 		fontSize: 12
-	},
-	sellerPhoto: {
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		backgroundColor: Colors.ColorSecondary,
-		justifyContent: 'center',
-		alignItems: 'center'
 	}
 });
 

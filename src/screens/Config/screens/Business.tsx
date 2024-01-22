@@ -1,7 +1,7 @@
 import { Text, View, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-import { BackButton, Button, Input, ScreenContainer } from '@/components';
+import { Avatar, BackButton, Button, Input, ScreenContainer } from '@/components';
 import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
 
@@ -23,16 +23,18 @@ export default function BusinessScreen() {
 		<ScreenContainer>
 			<BackButton />
 			<View style={styles.logoContainer}>
-				<Image
-					source={{ uri: 'https://cdn.dribbble.com/users/4213091/screenshots/14451394/media/69f34ada9e4286976aaeaf91f910ce45.png?resize=1600x1200&vertical=center' }}
-					style={styles.logo}
+				<Avatar
+					size={150}
+					url={session?.business?.logoUrl}
+					showChangeButton
+					onPressChangeButton={openLibrary}
+					placeholderLabel={
+						(session?.business?.name || '')
+							.split(' ')
+							.map(item => item.charAt(0))
+							.join('')
+					}
 				/>
-				<TouchableOpacity style={styles.changeLogoButton} onPress={openLibrary}>
-					<Image
-						source={require('@/assets/icons/edit-image.png')}
-						style={{ height: 24, width: 24 }}
-					/>
-				</TouchableOpacity>
 			</View>
 			<Text style={styles.merchantId}>@{session?.merchantId}</Text>
 

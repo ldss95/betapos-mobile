@@ -7,3 +7,4 @@ export { default as Select } from './Select';
 export { default as DatePicker } from './DatePicker';
 export { default as Alert } from './Alert';
 export { default as Skeleton } from './Skeleton';
+export { default as Avatar } from './Avatar';

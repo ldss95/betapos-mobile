@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import {
-	View,
-	StyleSheet,
-	Image,
-	TouchableOpacity,
-	Dimensions,
-	Text
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import dayjs from 'dayjs';
 
@@ -15,18 +8,15 @@ import {
 	Button,
 	Select,
 	Input,
-	RenderIf,
 	ScreenContainer,
-	DatePicker
+	DatePicker,
+	Avatar
 } from '@/components';
 import { useSessionStore } from '@/store/session';
-import Colors from '@/constants/Colors';
 import { UpdateProfileParams } from '@/types/user';
 import { useUpdateProfile } from '@/hooks/useUsers';
 import { showAlert } from '@/components/Alert';
 import useErrorHandling from '@/hooks/useError';
-
-const { width } = Dimensions.get('screen');
 
 export default function ProfileScreen() {
 	const session = useSessionStore(({ session }) => session);
@@ -79,31 +69,16 @@ export default function ProfileScreen() {
 		<ScreenContainer>
 			<BackButton />
 			<View style={styles.photoContainer}>
-				<RenderIf condition={!!modifiedUserData?.photo || !!session?.photoUrl}>
-					<Image
-						source={{
-							uri: (modifiedUserData.photo)
-								? `data:image/jpeg;base64,${modifiedUserData.photo.base64}`
-								: session?.photoUrl!
-						}}
-						style={styles.photo}
-					/>
-				</RenderIf>
-
-				<RenderIf condition={!session?.photoUrl}>
-					<View style={[styles.photo, { opacity: 0.6 }]}>
-						<Text style={{ fontWeight: 'bold', fontSize: 48, color: '#FFF' }}>
-							{session?.firstName?.charAt(0)}
-							{session?.lastName?.charAt(0)}
-						</Text>
-					</View>
-				</RenderIf>
-				<TouchableOpacity style={styles.changeLogoButton} onPress={changeProfilePhoto}>
-					<Image
-						source={require('@/assets/icons/edit-image.png')}
-						style={{ height: 24, width: 24 }}
-					/>
-				</TouchableOpacity>
+				<Avatar
+					url={(modifiedUserData.photo)
+						? `data:image/jpeg;base64,${modifiedUserData.photo.base64}`
+						: session?.photoUrl!
+					}
+					placeholderLabel={session?.firstName?.charAt(0) + ' ' + session?.lastName?.charAt(0)}
+					size={150}
+					onPressChangeButton={changeProfilePhoto}
+					showChangeButton
+				/>
 			</View>
 
 			<Input
@@ -177,25 +152,5 @@ const styles = StyleSheet.create({
 	photoContainer: {
 		position: 'relative',
 		alignItems: 'center'
-	},
-	photo: {
-		width: 150,
-		height: 150,
-		borderRadius: 75,
-		borderWidth: 1,
-		borderColor: '#FFF',
-		backgroundColor: Colors.ColorSecondary,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	changeLogoButton: {
-		backgroundColor: '#FFF',
-		width: 30,
-		height: 30,
-		borderRadius: 15,
-		justifyContent: 'center',
-		alignItems: 'center',
-		position: 'absolute',
-		right: (width - 190) / 2, bottom: 20
 	}
 });

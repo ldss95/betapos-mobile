@@ -44,7 +44,7 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 						</Text>
 					</View>
 				</RenderIf>
-				
+
 				<View>
 					<Text style={styles.name}>{session?.firstName} {session?.lastName}</Text>
 					<Text style={styles.email}>{session?.email}</Text>
