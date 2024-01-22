@@ -1,3 +1,5 @@
+import { BusinessProps } from "./business";
+
 export interface SessionProps {
 	id: string;
 	firstName: string;
@@ -8,6 +10,7 @@ export interface SessionProps {
 	birthDate: string;
 	roleId: string;
 	businessId: string;
+	business: BusinessProps;
 	photoUrl: string | null;
 	roleCode: RoleCode;
 	merchantId: string;

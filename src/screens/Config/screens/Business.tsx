@@ -18,7 +18,7 @@ export default function BusinessScreen() {
 
 		await ImagePicker.launchImageLibraryAsync();
 	}
-	
+
 	return (
 		<ScreenContainer>
 			<BackButton />
@@ -38,24 +38,29 @@ export default function BusinessScreen() {
 
 			<Input
 				label='Nombre'
+				defaultValue={session?.business?.name}
 			/>
 
 			<Input
 				label='RNC'
+				defaultValue={session?.business?.rnc}
 			/>
 
 			<Input
 				label='Correo Electrónico'
+				defaultValue={session?.business?.email}
 			/>
 
 			<Input
 				label='Dirección'
+				defaultValue={session?.business?.address}
 			/>
 
 			<Input
 				label='Teléfono'
+				defaultValue={session?.business?.phone}
 			/>
-			
+
 			<Button type='primary'>
 				Guardar
 			</Button>
