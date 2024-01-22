@@ -1,22 +1,73 @@
-import { Text, View, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Text, View, Dimensions, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import dayjs from 'dayjs';
 
 import { Avatar, BackButton, Button, Input, ScreenContainer } from '@/components';
 import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
+import { UpdateBusinessParams } from '@/types/business';
+import { useUpdateBusiness } from '@/hooks/useBusiness';
+import useErrorHandling from '@/hooks/useError';
+import { showAlert } from '@/components/Alert';
 
 const { width } = Dimensions.get('screen');
 
 export default function BusinessScreen() {
-	const session = useSessionStore(({ session }) => session);
+	const { session, setSession } = useSessionStore(({ session, setSession }) => ({
+		session,
+		setSession
+	}));
+	const [updateBusiness, loading, error] = useUpdateBusiness();
+	useErrorHandling(error);
+	const [modifiedBusinessData, setModifiedBusinessData] = useState<UpdateBusinessParams>({
+		id: ''
+	});
 
-	async function openLibrary() {
+	async function changeBusinessLogo() {
 		const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 		if (!granted) {
 			return;
 		}
 
-		await ImagePicker.launchImageLibraryAsync();
+		const { canceled, assets } = await ImagePicker.launchImageLibraryAsync({
+			base64: true,
+			quality: 0.5,
+			mediaTypes: ImagePicker.MediaTypeOptions.Images
+		});
+
+		if (canceled) {
+			return;
+		}
+
+		const [{ base64 }] = assets;
+		if (!base64) {
+			return;
+		}
+
+		setModifiedBusinessData({
+			...modifiedBusinessData,
+			logo: {
+				base64,
+				type: 'image/png',
+				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.png`
+			}
+		})
+	}
+
+	function afterUpdate() {
+		setSession({
+			...session!,
+			business: {
+				...session?.business!,
+				...modifiedBusinessData
+			}
+		});
+		showAlert({
+			title: 'Genial!',
+			type: 'success',
+			description: 'Tu negocio ha sido actualizado.'
+		});
 	}
 
 	return (
@@ -25,9 +76,12 @@ export default function BusinessScreen() {
 			<View style={styles.logoContainer}>
 				<Avatar
 					size={150}
-					url={session?.business?.logoUrl}
+					url={(modifiedBusinessData.logo)
+						? `data:image/jpeg;base64,${modifiedBusinessData.logo.base64}`
+						: session?.business?.logoUrl
+					}
 					showChangeButton
-					onPressChangeButton={openLibrary}
+					onPressChangeButton={changeBusinessLogo}
 					placeholderLabel={
 						(session?.business?.name || '')
 							.split(' ')
@@ -41,29 +95,43 @@ export default function BusinessScreen() {
 			<Input
 				label='Nombre'
 				defaultValue={session?.business?.name}
+				onChangeText={(name) => setModifiedBusinessData({ ...modifiedBusinessData, name })}
 			/>
 
 			<Input
 				label='RNC'
 				defaultValue={session?.business?.rnc}
+				onChangeText={(rnc) => setModifiedBusinessData({ ...modifiedBusinessData, rnc })}
 			/>
 
 			<Input
 				label='Correo Electrónico'
 				defaultValue={session?.business?.email}
+				onChangeText={(email) => setModifiedBusinessData({ ...modifiedBusinessData, email })}
 			/>
 
 			<Input
 				label='Dirección'
 				defaultValue={session?.business?.address}
+				onChangeText={(address) => setModifiedBusinessData({ ...modifiedBusinessData, address })}
 			/>
 
 			<Input
 				label='Teléfono'
 				defaultValue={session?.business?.phone}
+				onChangeText={(phone) => setModifiedBusinessData({ ...modifiedBusinessData, phone })}
 			/>
 
-			<Button type='primary'>
+			<Button
+				type='primary'
+				loading={loading}
+				onPress={() => {
+					updateBusiness(
+						{ ...modifiedBusinessData, id: session?.businessId! },
+						afterUpdate
+					);
+				}}
+			>
 				Guardar
 			</Button>
 		</ScreenContainer>

@@ -17,3 +17,17 @@ export interface BusinessProps {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface UpdateBusinessParams {
+	id: string;
+	logo?: {
+		base64: string;
+		type: string;
+		name: string;
+	};
+	name?: string;
+	rnc?: string;
+	email?: string;
+	address?: string;
+	phone?: string;
+}
