@@ -75,12 +75,12 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 				<Option
 					icon={require('@/assets/icons/config/security-user.png')}
 					text='Politicas de Privacidad'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, WebBrowserOptions)}
+					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}/legal/politicas-de-privacidad`, WebBrowserOptions)}
 				/>
 				<Option
 					icon={require('@/assets/icons/config/task-square.png')}
 					text='Términos y Condiciones'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}`, WebBrowserOptions)}
+					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}/legal/terminos-y-condiciones`, WebBrowserOptions)}
 				/>
 			</View>
 
