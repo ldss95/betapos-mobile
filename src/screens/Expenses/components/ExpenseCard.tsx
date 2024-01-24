@@ -35,12 +35,15 @@ const styles = StyleSheet.create({
 		padding: 10,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		gap: 20
 	},
 	descriptionContainer: {
 		flexDirection: 'row',
 		gap: 10,
-		alignItems: 'center'
+		alignItems: 'center',
+		flex: 1,
+		overflow: 'hidden'
 	},
 	time: {
 		textAlign: 'center',
@@ -62,9 +65,9 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	},
 	amount: {
-		textAlign: 'center',
+		textAlign: 'right',
 		color: '#FFF',
-		fontSize: 14
+		fontSize: 14,
 	}
 });
 

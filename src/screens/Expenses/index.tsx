@@ -1,12 +1,52 @@
+import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
+import dayjs from 'dayjs';
 
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
-import { Button, ScreenContainer } from '@/components';
+import { ScreenContainer, Skeleton } from '@/components';
 import ExpenseCard from './components/ExpenseCard';
 import { RootTabScreenProps } from '@/types/routes';
+import { useFetchExpenses } from '@/hooks/useExpenses';
+import useErrorHandling from '@/hooks/useError';
+import { format } from '@/utils/helpers';
+import { ExpensesPeriodFilter } from './components/PeriodFilter';
+import { ExpensesFilter } from '@/types/expense';
+
+const CardDescription = {
+	[ExpensesFilter.Today]: 'Gastado de hoy',
+	[ExpensesFilter.ThisWeek]: 'Gastado de la semana',
+	[ExpensesFilter.ThisMonth]: 'Gastado del mes',
+}
 
 export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expenses'>) {
+	const [selectedFilter, setSelectedFilter] = useState<ExpensesFilter>(ExpensesFilter.Today);
+	const [search, setSearch] = useState('');
+	const [expenses, loading, error, reload] = useFetchExpenses();
+	const totalAmount = useMemo(() => {
+		if (expenses.length === 0) {
+			return 0;
+		}
+
+		return expenses.reduce((total, { amount }) => total + amount, 0);
+	}, [expenses]);
+	const filteredExpenses = useMemo(() => {
+		if (expenses.length === 0) {
+			return [];
+		}
+
+		if (search === '') {
+			return expenses;
+		}
+
+		return expenses.filter(({ description, docNumber, category }) => (
+			description.toLowerCase().includes(search.toLowerCase()) ||
+			docNumber?.toLowerCase()?.includes(search.toLowerCase()) ||
+			category.name.toLowerCase().includes(search.toLowerCase())
+		))
+	}, [search, expenses]);
+	useErrorHandling(error);
+
 	return (
 		<ScreenContainer hasBottomTabs>
 			<View style={{ flexDirection: 'row', gap: 20 }}>
@@ -19,6 +59,7 @@ export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expen
 						placeholder='Buscar'
 						placeholderTextColor='#FFFFFF80'
 						style={styles.searchInput}
+						onChangeText={setSearch}
 					/>
 				</View>
 
@@ -34,48 +75,32 @@ export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expen
 			</View>
 
 			<View style={styles.summaryCardContainer}>
-				<Text style={styles.summaryCardValue}>$ 86,500</Text>
-				<Text style={styles.summaryCardLabel}>Gastos de hoy</Text>
+				<Skeleton active={loading} />
+
+				<Text style={styles.summaryCardValue}>$ {format.cash(totalAmount)}</Text>
+				<Text style={styles.summaryCardLabel}>{CardDescription[selectedFilter]}</Text>
 			</View>
 
-			<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
-				<Button small style='rounded' type='secondary'>Hoy</Button>
-				<Button small style='rounded'>Esta semana</Button>
-				<Button small style='rounded'>Este mes</Button>
+			<ExpensesPeriodFilter
+				onChange={(filter) => {
+					reload(filter);
+					setSelectedFilter(filter);
+				}}
+			/>
+
+			<Text style={styles.listTitle}>Historial</Text>
+
+			<View style={{ gap: 20 }}>
+				{filteredExpenses.map(({ id, amount, description, category, date }) => (
+					<ExpenseCard
+						key={id}
+						time={dayjs(date).format('DD[\n]MMM')}
+						category={category.name}
+						description={description}
+						amount={amount}
+					/>
+				))}
 			</View>
-
-			<Text style={{ fontWeight: 'bold', fontSize: 18, color: '#FFF' }}>Historial</Text>
-
-			<ExpenseCard
-				time={'02:15\nPM'}
-				category='Electricidad'
-				description='Pago EDESUR'
-				amount={16300}
-			/>
-			<ExpenseCard
-				time={'08:16\nAM'}
-				category='Telecomunicaciones'
-				description='Factura de internet claro'
-				amount={2100}
-			/>
-			<ExpenseCard
-				time={'08:00\nAM'}
-				category='Transporte'
-				description='Combustible'
-				amount={5600}
-			/>
-			<ExpenseCard
-				time={'08:00\nAM'}
-				category='Personal'
-				description='Pago de nómina'
-				amount={45000}
-			/>
-			<ExpenseCard
-				time={'08:16\nAM'}
-				category='Telecomunicaciones'
-				description='Factura de claro'
-				amount={2100}
-			/>
 		</ScreenContainer>
 	)
 }
@@ -109,7 +134,8 @@ const styles = StyleSheet.create({
 		borderRadius: Space.BorderMd,
 		padding: 20,
 		gap: 10,
-		backgroundColor: Colors.BgCard
+		backgroundColor: Colors.BgCard,
+		overflow: 'hidden'
 	},
 	summaryCardValue: {
 		fontSize: 48,
@@ -129,5 +155,10 @@ const styles = StyleSheet.create({
 		height: 60,
 		width: 60,
 		borderRadius: Space.BorderMd
+	},
+	listTitle: {
+		fontWeight: 'bold',
+		fontSize: 18,
+		color: '#FFF'
 	}
 });
