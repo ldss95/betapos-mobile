@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
 import { ApiError } from '@/types/errors';
-import { ExpenseProps, ExpensesFilter } from '@/types/expense';
-import { fetchExpenses } from '@/services/expenses';
+import { ExpensePaymentMethodProps, ExpenseProps, ExpensesFilter } from '@/types/expense';
+import { fetchExpenses, fetchExpensesPaymentMethods } from '@/services/expenses';
 
-type UseFetchExpenses = [
+type UseFetchExpensesType = [
 	ExpenseProps[],
 	boolean,
 	ApiError | null,
 	(filter?: ExpensesFilter) => void
 ];
 
-export const useFetchExpenses = (): UseFetchExpenses => {
+export const useFetchExpenses = (): UseFetchExpensesType => {
 	const [expenses, setExpenses] = useState<ExpenseProps[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<ApiError | null>(null);
@@ -34,4 +34,35 @@ export const useFetchExpenses = (): UseFetchExpenses => {
 	}
 
 	return [expenses, loading, error, load];
+}
+
+type UseFetchExpensesPaymentMethodsType = [
+	ExpensePaymentMethodProps[],
+	boolean,
+	ApiError | null
+];
+
+export const useFetchExpensesPaymentMethods = (): UseFetchExpensesPaymentMethodsType => {
+	const [paymentMethods, setPaymentMethods] = useState<ExpensePaymentMethodProps[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<ApiError | null>(null);
+
+	useEffect(() => {
+		load();
+	}, []);
+
+	async function load() {
+		try {
+			setLoading(true);
+			setError(null);
+			const data = await fetchExpensesPaymentMethods();
+			setPaymentMethods(data);
+		} catch (error) {
+			setError(error as ApiError);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return [paymentMethods, loading, error];
 }

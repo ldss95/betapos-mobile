@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { ExpenseProps, ExpensesFilter } from '@/types/expense';
+import { ExpensePaymentMethodProps, ExpenseProps, ExpensesFilter } from '@/types/expense';
 import http from '@/utils/http';
 
 export async function fetchExpenses(filter: ExpensesFilter) {
@@ -23,5 +23,10 @@ export async function fetchExpenses(filter: ExpensesFilter) {
 		}
 	});
 
+	return data;
+}
+
+export async function fetchExpensesPaymentMethods() {
+	const { data } = await http.get<ExpensePaymentMethodProps[]>('/expenses/payment-methods')
 	return data;
 }
