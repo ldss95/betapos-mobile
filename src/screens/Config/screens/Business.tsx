@@ -40,17 +40,19 @@ export default function BusinessScreen() {
 			return;
 		}
 
-		const [{ base64 }] = assets;
+		const [{ base64, uri }] = assets;
 		if (!base64) {
 			return;
 		}
+		console.log(base64.substring(0, 100))
 
+		const extension = uri.split('.').pop();
 		setModifiedBusinessData({
 			...modifiedBusinessData,
 			logo: {
 				base64,
-				type: 'image/png',
-				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.png`
+				type: `image/${extension}`,
+				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.${extension}`
 			}
 		})
 	}

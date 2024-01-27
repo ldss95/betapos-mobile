@@ -32,7 +32,7 @@ export default function ProfileScreen() {
 			return;
 		}
 
-		const { canceled, assets } = await ImagePicker.launchCameraAsync({
+		const { canceled, assets } = await ImagePicker.launchImageLibraryAsync({
 			base64: true,
 			quality: 0.5,
 			mediaTypes: ImagePicker.MediaTypeOptions.Images
@@ -42,17 +42,18 @@ export default function ProfileScreen() {
 			return;
 		}
 
-		const [{ base64 }] = assets;
+		const [{ base64, uri }] = assets;
 		if (!base64) {
 			return;
 		}
 
+		const extension = uri.split('.').pop();
 		setModifiedUserData({
 			...modifiedUserData,
 			photo: {
 				base64,
-				type: 'image/png',
-				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.png`
+				type: `image/${extension}`,
+				name: `${session?.id}-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.${extension}`
 			}
 		})
 	}
