@@ -1,11 +1,13 @@
 import { memo } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
 import { format } from '@/utils/helpers';
 import { Skeleton } from '@/components';
+
+const { width } = Dimensions.get('screen');
 
 interface SalesSummaryCardProps {
 	amount: number;
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
 	},
 	statisticLine: {
 		width: '100%',
+		height: (width - 40) / 4.5,
 		marginTop: -35,
 		zIndex: -1
 	},
