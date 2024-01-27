@@ -1,6 +1,4 @@
-import { Text, StyleSheet } from 'react-native';
-
-import { BackButton, RenderIf, ScreenContainer } from '@/components';
+import { RenderIf, ScreenContainer, ScreenHeader } from '@/components';
 import PendingInvoiceCard from '../components/PendingInvoiceCard';
 import Receipt from '../components/Receipt';
 import { useFetchAllBills } from '@/hooks/useBilling';
@@ -12,8 +10,7 @@ export default function BillingScreen() {
 
 	return (
 		<ScreenContainer>
-			<BackButton />
-			<Text style={styles.title}>Tus Facturas</Text>
+			<ScreenHeader title='Tus Facturas' />
 
 			<RenderIf condition={loading && bills.length === 0}>
 				<PendingInvoiceCard
@@ -69,12 +66,3 @@ export default function BillingScreen() {
 		</ScreenContainer>
 	)
 }
-
-const styles = StyleSheet.create({
-	title: {
-		color: '#FFF',
-		fontSize: 18,
-		fontWeight: 'bold',
-		marginTop: 10
-	}
-});

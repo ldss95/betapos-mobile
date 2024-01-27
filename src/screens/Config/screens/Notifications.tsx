@@ -1,6 +1,4 @@
-import { Text } from 'react-native';
-
-import { BackButton, ScreenContainer } from '@/components';
+import { ScreenContainer, ScreenHeader } from '@/components';
 import NotificationConfigItem from '../components/NotificationConfigItem';
 import { useFetchSettings, useUpdateSettings } from '@/hooks/useSettings';
 import useErrorHandling from '@/hooks/useError';
@@ -12,8 +10,7 @@ export default function NotificationsScreen() {
 
 	return (
 		<ScreenContainer>
-			<BackButton />
-			<Text style={{ color: '#FFF', fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Notificaciones</Text>
+			<ScreenHeader title='Notificaciones' />
 
 			<NotificationConfigItem
 				title='Nuevo Turno'

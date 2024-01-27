@@ -10,7 +10,7 @@ import * as Application from 'expo-application';
 import * as WebBrowser from 'expo-web-browser';
 import { Image } from 'expo-image';
 
-import { RenderIf, ScreenContainer } from '@/components';
+import { Avatar, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootTabScreenProps } from '@/types/routes';
@@ -29,21 +29,14 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 				style={styles.profileCardContainer}
 				onPress={() => navigation.navigate('Profile')}
 			>
-				<RenderIf condition={!!session?.photoUrl}>
-					<Image
-						source={{ uri: session?.photoUrl! }}
-						style={styles.profileImage}
-					/>
-				</RenderIf>
-
-				<RenderIf condition={!session?.photoUrl}>
-					<View style={[styles.profileImage, { opacity: 0.6 }]}>
-						<Text style={{ fontWeight: 'bold', fontSize: 24, color: '#FFF' }}>
-							{session?.firstName?.charAt(0)}
-							{session?.lastName?.charAt(0)}
-						</Text>
-					</View>
-				</RenderIf>
+				<Avatar
+					url={session?.photoUrl!}
+					placeholderLabel={
+						`${session?.firstName?.charAt(0)}` +
+						session?.lastName?.charAt(0)
+					}
+					size={60}
+				/>
 
 				<View>
 					<Text style={styles.name}>{session?.firstName} {session?.lastName}</Text>
@@ -145,14 +138,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 10
-	},
-	profileImage: {
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		backgroundColor: Colors.ColorSecondary,
-		justifyContent: 'center',
-		alignItems: 'center'
 	},
 	optionsContainer: {
 		padding: 10,

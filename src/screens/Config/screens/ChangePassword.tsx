@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
-import { BackButton, Button, Input, ScreenContainer } from '@/components';
+import { Button, Input, ScreenContainer, ScreenHeader } from '@/components';
 import { RootStackScreenProps } from '@/types/routes';
 import { useChangePassword } from '@/hooks/useAuth';
 import useErrorHandling from '@/hooks/useError';
@@ -44,14 +44,12 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
 	return (
 		<ScreenContainer justifySpaceBetween>
 			<View style={{ gap: 20 }}>
-				<BackButton />
-				<Text style={{ color: '#FFF', fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}>Nueva Contraseña</Text>
+				<ScreenHeader title='Nueva Contraseña' />
 
 				<Input secureTextEntry label='Contraseña Actual' onChangeText={setOldPassword} />
 				<Input secureTextEntry label='Nueva contraseña' onChangeText={setNewPassword} />
 				<Input secureTextEntry label='Confirmar nueva contraseña' onChangeText={setNewPasswordConfirm} />
 			</View>
-
 
 			<Button
 				type='primary'

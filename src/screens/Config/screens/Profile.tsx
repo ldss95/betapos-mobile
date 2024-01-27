@@ -4,13 +4,13 @@ import * as ImagePicker from 'expo-image-picker';
 import dayjs from 'dayjs';
 
 import {
-	BackButton,
 	Button,
 	Select,
 	Input,
 	ScreenContainer,
 	DatePicker,
-	Avatar
+	Avatar,
+	ScreenHeader
 } from '@/components';
 import { useSessionStore } from '@/store/session';
 import { UpdateProfileParams } from '@/types/user';
@@ -68,7 +68,7 @@ export default function ProfileScreen() {
 
 	return (
 		<ScreenContainer>
-			<BackButton />
+			<ScreenHeader title='Perfil' />
 			<View style={styles.photoContainer}>
 				<Avatar
 					url={(modifiedUserData.photo)

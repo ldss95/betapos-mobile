@@ -1,4 +1,4 @@
-import { BackButton, DatePicker, Input, ScreenContainer, Select } from '@/components';
+import { DatePicker, Input, ScreenContainer, ScreenHeader, Select } from '@/components';
 import useErrorHandling from '@/hooks/useError';
 import { useFetchExpensesPaymentMethods } from '@/hooks/useExpenses';
 
@@ -8,7 +8,7 @@ export default function SaveExpenseScreen() {
 
 	return (
 		<ScreenContainer>
-			<BackButton />
+			<ScreenHeader title='Nuevo Gasto' />
 
 			<Input label='Monto' />
 

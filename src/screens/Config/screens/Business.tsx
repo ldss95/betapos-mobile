@@ -3,7 +3,7 @@ import { Text, View, Dimensions, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import dayjs from 'dayjs';
 
-import { Avatar, BackButton, Button, Input, ScreenContainer } from '@/components';
+import { Avatar, Button, Input, ScreenContainer, ScreenHeader } from '@/components';
 import { useSessionStore } from '@/store/session';
 import Colors from '@/constants/Colors';
 import { UpdateBusinessParams } from '@/types/business';
@@ -74,7 +74,7 @@ export default function BusinessScreen() {
 
 	return (
 		<ScreenContainer>
-			<BackButton />
+			<ScreenHeader title='Mi Negocio' />
 			<View style={styles.logoContainer}>
 				<Avatar
 					size={150}

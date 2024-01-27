@@ -10,7 +10,7 @@ import {
 import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
 
-import { BackButton, RenderIf, ScreenContainer } from '@/components';
+import { RenderIf, ScreenContainer, ScreenHeader } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootStackScreenProps } from '@/types/routes';
@@ -51,7 +51,7 @@ export default function SecurityAndPasswordScreen({ navigation }: RootStackScree
 
 	return (
 		<ScreenContainer>
-			<BackButton />
+			<ScreenHeader title='Seguridad y Contraseña' />
 
 			<View style={styles.container}>
 				<Item
