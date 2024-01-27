@@ -11,11 +11,11 @@ import {
 	Text,
 	StyleSheet,
 	Dimensions,
-	Keyboard,
-	Image
+	Keyboard
 } from 'react-native'
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
+import { Image } from 'expo-image';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';

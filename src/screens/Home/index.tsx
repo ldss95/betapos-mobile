@@ -1,4 +1,6 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
+import { useEffect } from 'react';
+import { Image } from 'expo-image';
 
 import SalesSummaryCard from './components/SalesSummaryCard';
 import MicroData from './components/MicroData';

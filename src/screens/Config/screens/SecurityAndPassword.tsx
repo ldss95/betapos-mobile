@@ -1,6 +1,5 @@
 import {
 	TouchableOpacity,
-	Image,
 	Text,
 	View,
 	Dimensions,
@@ -9,6 +8,7 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 
 import { BackButton, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';

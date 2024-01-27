@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Image, View, Text, StyleSheet, Share } from 'react-native';
+import { View, Text, StyleSheet, Share } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-root-toast';
+import { Image } from 'expo-image';
 
 import { Button, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';

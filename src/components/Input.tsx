@@ -5,9 +5,9 @@ import {
 	Text,
 	TextInput,
 	StyleSheet,
-	TouchableOpacity,
-	Image
+	TouchableOpacity
 } from 'react-native';
+import { Image } from 'expo-image';
 
 import RenderIf from './RenderIf';
 import Space from '@/constants/Space';

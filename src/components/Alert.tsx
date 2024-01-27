@@ -1,6 +1,7 @@
 import { BlurView } from 'expo-blur';
 import { ReactElement, memo, useEffect, useMemo, useState } from 'react';
-import { Modal, View, Text, Image, StyleSheet, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { Modal, View, Text, StyleSheet, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { Image } from 'expo-image';
 import { Subject } from 'rxjs';
 
 import Colors from '@/constants/Colors';

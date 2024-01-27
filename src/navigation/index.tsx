@@ -1,9 +1,10 @@
 import React, { Ref } from 'react';
-import { Image, ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType } from 'react-native';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Host } from 'react-native-portalize';
+import { Image } from 'expo-image';
 
 import { RootStackParamList, RootTabParamList } from '@/types/routes';
 import LinkingConfiguration from './LinkingConfiguration';

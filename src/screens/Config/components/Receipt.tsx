@@ -3,7 +3,6 @@ import {
 	View,
 	Text,
 	TouchableOpacity,
-	Image,
 	StyleSheet,
 	ActivityIndicator
 } from 'react-native';
@@ -12,6 +11,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { shareAsync } from 'expo-sharing';
+import { Image } from 'expo-image';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';

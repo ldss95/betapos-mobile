@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import dayjs from 'dayjs';
+import { Image } from 'expo-image';
 
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';

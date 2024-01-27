@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import { Image } from 'expo-image';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import RenderIf from './RenderIf';

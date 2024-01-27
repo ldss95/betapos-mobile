@@ -2,11 +2,11 @@ import { memo } from 'react';
 import {
 	View,
 	Text,
-	Image,
 	ImageSourcePropType,
 	StyleSheet,
 	ActivityIndicator
 } from 'react-native';
+import { Image } from 'expo-image';
 
 import { format } from '@/utils/helpers';
 import { RenderIf } from '@/components';

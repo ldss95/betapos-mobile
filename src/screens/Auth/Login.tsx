@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 
 import { useLogin } from '@/hooks/useAuth';
 import Colors from '@/constants/Colors';

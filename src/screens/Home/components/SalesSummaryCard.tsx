@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { Image } from 'expo-image';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';

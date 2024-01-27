@@ -2,7 +2,6 @@ import { memo, useState } from 'react';
 import {
 	Modal,
 	TouchableOpacity,
-	Image,
 	Text,
 	Platform,
 	StyleSheet,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import dayjs from 'dayjs';
 
 import RenderIf from './RenderIf';

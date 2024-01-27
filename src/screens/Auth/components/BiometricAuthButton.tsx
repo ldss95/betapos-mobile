@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { TouchableOpacity, Text, Image, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image';
 
 import Colors from '@/constants/Colors';
 import { RenderIf } from '@/components';

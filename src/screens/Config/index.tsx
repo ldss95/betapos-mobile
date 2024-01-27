@@ -2,13 +2,13 @@ import {
 	Text,
 	TouchableOpacity,
 	StyleSheet,
-	Image,
 	View,
 	ImageSourcePropType,
 	ActivityIndicator
 } from 'react-native';
 import * as Application from 'expo-application';
 import * as WebBrowser from 'expo-web-browser';
+import { Image } from 'expo-image';
 
 import { RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
