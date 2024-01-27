@@ -1,6 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import { memo } from 'react';
-import { TouchableOpacity, Text, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+
+import Colors from '@/constants/Colors';
+import Space from '@/constants/Space';
 
 const BackButton = () => {
 	const navigation = useNavigation();
@@ -8,12 +12,24 @@ const BackButton = () => {
 	return (
 		<TouchableOpacity
 			onPress={() => navigation.goBack()}
-			style={{  flexDirection: 'row', alignItems: 'center' }}
+			style={styles.container}
 		>
-			<Image source={require('@/assets/icons/arrow-left.png')} style={{ width: 28, height: 28 }} />
-			<Text style={{ color: '#FFF', fontSize: 14 }}>Atras</Text>
+			<Image
+				source={require('@/assets/icons/arrow-left.png')}
+				style={{ width: 28, height: 28 }}
+			/>
 		</TouchableOpacity>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: Colors.BgCard,
+		padding: 5,
+		borderRadius: Space.BorderSm
+	}
+});
 
 export default memo(BackButton);
