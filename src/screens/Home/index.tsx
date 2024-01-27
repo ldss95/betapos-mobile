@@ -10,13 +10,19 @@ import { useFetchShifts } from '@/hooks/useShifts';
 import { useSalesSummary } from '@/hooks/useSalesSummary';
 import { useFetchPurchasesPendingToPayAmount } from '@/hooks/usePurchases';
 import { useFetchAccountsReceivableAmount } from '@/hooks/useSales';
-import { useEffect } from 'react';
+import useErrorHandling from '@/hooks/useError';
 
 export default function HomeScreen() {
 	const [data, loadingSummary] = useSalesSummary();
 	const [shifts, loadingShifts, errorShifts, reloadShifts] = useFetchShifts();
 	const [pendingToPay, loadingPTP, errorPTP, reloadPTP] = useFetchPurchasesPendingToPayAmount();
 	const [accountsReceivable, loadingAR, errorAR, reloadAR] = useFetchAccountsReceivableAmount();
+	useErrorHandling(
+		errorAR ||
+		errorAR ||
+		errorPTP ||
+		errorShifts
+	);
 
 	useEffect(() => {
 		reloadAR(false);
