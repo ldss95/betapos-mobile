@@ -36,6 +36,12 @@ export interface ExpensePaymentMethodProps {
 	name: string;
 }
 
+export interface ExpenseCategoryProps {
+	id: string;
+	name: string;
+	description: string;
+}
+
 export enum ExpensesFilter {
 	Today = 'today',
 	ThisWeek = 'week',

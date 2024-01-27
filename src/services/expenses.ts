@@ -1,6 +1,11 @@
 import dayjs from 'dayjs';
 
-import { ExpensePaymentMethodProps, ExpenseProps, ExpensesFilter } from '@/types/expense';
+import {
+	ExpenseCategoryProps,
+	ExpensePaymentMethodProps,
+	ExpenseProps,
+	ExpensesFilter
+} from '@/types/expense';
 import http from '@/utils/http';
 
 export async function fetchExpenses(filter: ExpensesFilter) {
@@ -27,6 +32,11 @@ export async function fetchExpenses(filter: ExpensesFilter) {
 }
 
 export async function fetchExpensesPaymentMethods() {
-	const { data } = await http.get<ExpensePaymentMethodProps[]>('/expenses/payment-methods')
+	const { data } = await http.get<ExpensePaymentMethodProps[]>('/expenses/payment-methods');
+	return data;
+}
+
+export async function fetchExpensesCategories() {
+	const { data } = await http.get<ExpenseCategoryProps[]>('/expenses/categories');
 	return data;
 }

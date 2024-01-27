@@ -1,10 +1,11 @@
 import { DatePicker, Input, ScreenContainer, ScreenHeader, Select } from '@/components';
 import useErrorHandling from '@/hooks/useError';
-import { useFetchExpensesPaymentMethods } from '@/hooks/useExpenses';
+import { useFetchExpensesCategories, useFetchExpensesPaymentMethods } from '@/hooks/useExpenses';
 
 export default function SaveExpenseScreen() {
-	const [paymentMethods, loading, error] = useFetchExpensesPaymentMethods();
-	useErrorHandling(error);
+	const [paymentMethods, loadingPM, errorPM] = useFetchExpensesPaymentMethods();
+	const [categories, loadingC, errorC] = useFetchExpensesCategories();
+	useErrorHandling(errorPM || errorC);
 
 	return (
 		<ScreenContainer>
@@ -27,6 +28,11 @@ export default function SaveExpenseScreen() {
 			<Select
 				options={paymentMethods.map(({ id, name }) => ({ value: id, label: name }))}
 				label='Método de pago'
+			/>
+
+			<Select
+				options={categories.map(({ id, name }) => ({ value: id, label: name }))}
+				label='Categoría'
 			/>
 		</ScreenContainer>
 	)
