@@ -8,7 +8,7 @@ import esLocale from 'dayjs/locale/es-do';
 locale(esLocale);
 
 Sentry.init({
-	dsn: SentryDSN,
+	dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
 	tracesSampleRate: 1.0,
 	environment: __DEV__ ? 'development' : 'production',
 	enableNative: false
@@ -16,7 +16,6 @@ Sentry.init({
 
 import Navigation from './src/navigation';
 import { RootStackParamList } from '@/types/routes';
-import { SentryDSN } from '@/constants/Environment';
 import { Unauthorized$ } from '@/utils/helpers';
 import { useSessionStore } from '@/store/session';
 import { Alert } from '@/components';

@@ -14,10 +14,11 @@ import { Avatar, RenderIf, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
 import Space from '@/constants/Space';
 import { RootTabScreenProps } from '@/types/routes';
-import { ApiUrl } from '@/constants/Environment';
 import { useSessionStore } from '@/store/session';
 import { useLogout } from '@/hooks/useAuth';
 import { WebBrowserOptions } from '@/utils/helpers';
+
+const { EXPO_PUBLIC_API_URL } = process.env;
 
 export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'>) {
 	const session = useSessionStore(({ session }) => session);
@@ -68,12 +69,12 @@ export default function ConfigScreen({ navigation }: RootTabScreenProps<'Config'
 				<Option
 					icon={require('@/assets/icons/config/security-user.png')}
 					text='Politicas de Privacidad'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}/legal/politicas-de-privacidad`, WebBrowserOptions)}
+					onPress={() => WebBrowser.openBrowserAsync(`${EXPO_PUBLIC_API_URL}/legal/politicas-de-privacidad`, WebBrowserOptions)}
 				/>
 				<Option
 					icon={require('@/assets/icons/config/task-square.png')}
 					text='Términos y Condiciones'
-					onPress={() => WebBrowser.openBrowserAsync(`${ApiUrl}/legal/terminos-y-condiciones`, WebBrowserOptions)}
+					onPress={() => WebBrowser.openBrowserAsync(`${EXPO_PUBLIC_API_URL}/legal/terminos-y-condiciones`, WebBrowserOptions)}
 				/>
 			</View>
 

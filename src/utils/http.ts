@@ -2,10 +2,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Unauthorized$ } from './helpers';
-import { ApiUrl } from '@/constants/Environment';
 
 const http = axios.create({
-	baseURL: ApiUrl,
+	baseURL: process.env.EXPO_PUBLIC_API_URL,
 	withCredentials: true
 })
 

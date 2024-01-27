@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
 import { useSessionStore } from '@/store/session';
-import { ApiUrl } from '@/constants/Environment';
 
-const socket = io(ApiUrl, {
+const socket = io(process.env.EXPO_PUBLIC_API_URL!, {
 	autoConnect: false,
 	transports: ['websocket']
 });
