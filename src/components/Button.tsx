@@ -23,9 +23,10 @@ interface ButtonProps {
 	type?: 'primary' | 'secondary' | 'error'
 	icon?: ImageSourcePropType;
 	borderColor?: string;
+	disabled?: boolean;
 }
 
-const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium, borderColor, auto }: ButtonProps) => {
+const Button = ({ onPress, children, loading, small, style = 'squared', type, icon, medium, borderColor, auto, disabled }: ButtonProps) => {
 	return (
 		<TouchableOpacity
 			style={[
@@ -39,9 +40,11 @@ const Button = ({ onPress, children, loading, small, style = 'squared', type, ic
 					...type === 'primary' && styles.primary,
 					...type === 'secondary' && styles.secondary,
 					...type === 'error' && styles.error,
-					...borderColor && { borderColor }
+					...borderColor && { borderColor },
+					...disabled && styles.disabled
 				}
 			]}
+			disabled={disabled}
 			onPress={onPress}
 		>
 			<RenderIf condition={!!icon}>
@@ -81,6 +84,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderWidth: 1,
 		borderColor: Colors.BgCard
+	},
+	disabled: {
+		opacity: 0.3,
+		backgroundColor: 'grey',
+		borderWidth: 0
 	},
 	small: {
 		paddingHorizontal: 15,
