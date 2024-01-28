@@ -69,6 +69,7 @@ const PendingInvoiceCard = ({ amount, date, invoiceNumber, paymentLink, loading 
 						borderColor={Colors.ColorPrimary}
 						onPress={handleDownload}
 						loading={downloading}
+						disabled
 					>
 						Descargar
 					</Button>
