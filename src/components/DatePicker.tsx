@@ -20,9 +20,10 @@ interface DatePickerProps {
 	value?: string;
 	label: string;
 	onChange?: (date?: string) => void;
+	required?: boolean;
 }
 
-const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
+const DatePicker = ({ value, label, onChange, required = false }: DatePickerProps) => {
 	const [showPicker, setShowPicker] = useState(false);
 
 	return (
@@ -30,6 +31,10 @@ const DatePicker = ({ value, label, onChange }: DatePickerProps) => {
 			<View>
 				<Text style={styles.label}>
 					{label}
+
+					<RenderIf condition={required}>
+						<Text style={{ color: 'red' }}>*</Text>
+					</RenderIf>
 				</Text>
 				<TouchableOpacity
 					style={styles.input}

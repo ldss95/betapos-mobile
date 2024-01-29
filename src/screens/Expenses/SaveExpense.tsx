@@ -20,11 +20,13 @@ export default function SaveExpenseScreen() {
 
 			<Input
 				label='Nombre / Descripción'
+				required
 			/>
 
 			<Input
 				label='Monto'
 				keyboardType='decimal-pad'
+				required
 			/>
 
 			<Input
@@ -44,6 +46,7 @@ export default function SaveExpenseScreen() {
 
 			<DatePicker
 				label='Fecha'
+				required
 			/>
 
 			<Select
@@ -53,11 +56,13 @@ export default function SaveExpenseScreen() {
 				]}
 				label='Tipo'
 				height='25%'
+				required
 			/>
 
 			<Select
 				options={paymentMethods.map(({ id, name }) => ({ value: id, label: name }))}
 				label='Método de pago'
+				required
 			/>
 
 			<Select

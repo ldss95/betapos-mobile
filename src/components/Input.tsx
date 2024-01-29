@@ -16,15 +16,20 @@ import Colors from '@/constants/Colors';
 interface InputProps extends TextInputProps {
 	label: string;
 	placeholder?: string;
+	required?: boolean;
 }
 
-const Input = ({ label, placeholder, secureTextEntry, ...props }: InputProps) => {
+const Input = ({ label, placeholder, secureTextEntry, required = false, ...props }: InputProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
 		<View>
 			<Text style={styles.label}>
 				{label}
+
+				<RenderIf condition={required}>
+					<Text style={{ color: 'red' }}>*</Text>
+				</RenderIf>
 			</Text>
 			<TextInput
 				style={styles.input}

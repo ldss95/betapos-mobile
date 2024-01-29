@@ -19,6 +19,7 @@ import { Image } from 'expo-image';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
+import RenderIf from './RenderIf';
 
 const { height } = Dimensions.get('screen');
 
@@ -32,9 +33,10 @@ interface DropDownProps {
 	height?: string;
 	multiple?: boolean;
 	defaultValues?: (string | number | boolean)[];
+	required?: boolean;
 }
 
-const Select = ({ options, label, onDone, ...props }: DropDownProps) => {
+const Select = ({ options, label, onDone, required = false, ...props }: DropDownProps) => {
 	const ModalRef = useRef<Modalize>(null);
 	const numericHeight = useMemo(() => {
 		if (!height) {
@@ -84,7 +86,12 @@ const Select = ({ options, label, onDone, ...props }: DropDownProps) => {
 
 	return (
 		<View>
-			<Text style={styles.label}>{label}</Text>
+			<Text style={styles.label}>
+				{label}
+				<RenderIf condition={required}>
+					<Text style={{ color: 'red' }}>*</Text>
+				</RenderIf>
+			</Text>
 			<TouchableOpacity
 				style={styles.input}
 				onPress={() => setVisible(true)}
