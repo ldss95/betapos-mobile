@@ -54,7 +54,8 @@
     "zustand": "^4.4.6",
     "expo-file-system": "~15.4.5",
     "expo-sharing": "~11.5.0",
-    "expo-image": "~1.3.5"
+    "expo-image": "~1.3.5",
+    "expo-document-picker": "~11.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -34,7 +34,14 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Permite que $(PRODUCT_NAME) acceda a tus fotos para poder cambiar tu foto de perfil o logo."
+          "photosPermission": "Permite que $(PRODUCT_NAME) acceda a tus fotos para poder cambiar tu foto de perfil o logo.",
+		  "cameraPermission": "Permite que $(PRODUCT_NAME) acceda a tu cámara para poder tomar fotos de tus facturas al registrar gastos."
+        }
+      ],
+	  [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Permite que $(PRODUCT_NAME) acceda a tus documentos para poder adjuntar PDF al registrar tus gastos."
         }
       ]
     ],

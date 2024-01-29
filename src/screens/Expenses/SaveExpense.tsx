@@ -1,7 +1,8 @@
-import { Button, DatePicker, Input, ScreenContainer, ScreenHeader, Select } from '@/components';
 import useErrorHandling from '@/hooks/useError';
-import { useFetchExpensesCategories, useFetchExpensesPaymentMethods } from '@/hooks/useExpenses';
 import { useFetchProviders } from '@/hooks/useProviders';
+import { Button, DatePicker, Input, ScreenContainer, ScreenHeader, Select } from '@/components';
+import { useFetchExpensesCategories, useFetchExpensesPaymentMethods } from '@/hooks/useExpenses';
+import AttachDocument from './components/AttachDocument';
 
 export default function SaveExpenseScreen() {
 	const [paymentMethods, loadingPM, errorPM] = useFetchExpensesPaymentMethods();
@@ -69,6 +70,8 @@ export default function SaveExpenseScreen() {
 				label='Proveedor'
 				height='75%'
 			/>
+
+			<AttachDocument />
 
 			<Button type='primary'>
 				Guardar
