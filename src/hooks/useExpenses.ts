@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react';
 
 import { ApiError } from '@/types/errors';
-import { ExpenseCategoryProps, ExpensePaymentMethodProps, ExpenseProps, ExpensesFilter } from '@/types/expense';
-import { fetchExpenses, fetchExpensesCategories, fetchExpensesPaymentMethods, saveExpense } from '@/services/expenses';
+import {
+	ExpenseCategoryProps,
+	ExpensePaymentMethodProps,
+	ExpenseProps,
+	ExpensesFilter,
+	SaveExpenseParams
+} from '@/types/expense';
+import {
+	fetchExpenses,
+	fetchExpensesCategories,
+	fetchExpensesPaymentMethods,
+	saveExpense
+} from '@/services/expenses';
 
 type UseFetchExpensesType = [
 	ExpenseProps[],
@@ -99,7 +110,7 @@ export const useFetchExpensesCategories = (): UseFetchExpensesCategoriesType => 
 }
 
 type UseSaveExpenseType = [
-	(data: ExpenseProps, onDone?: () => void) => void,
+	(data: SaveExpenseParams, onDone?: () => void) => void,
 	boolean,
 	ApiError | null
 ];
@@ -108,7 +119,7 @@ export const useSaveExpense = (): UseSaveExpenseType => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<ApiError | null>(null);
 
-	async function handleSave(data: ExpenseProps, onDone?: () => void) {
+	async function handleSave(data: SaveExpenseParams, onDone?: () => void) {
 		try {
 			setLoading(true);
 			setError(null);

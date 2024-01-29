@@ -1,3 +1,6 @@
+import { DocumentPickerAsset } from 'expo-document-picker';
+import { ImagePickerAsset } from 'expo-image-picker';
+
 import { ProviderProps } from './provider';
 import { UserProps } from './user';
 
@@ -23,6 +26,22 @@ export interface ExpenseProps {
 	type: 'SERVICES' | 'PRODUCTS';
 	createdAt: string;
 	updatedAt: string;
+}
+
+export interface SaveExpenseParams {
+	providerId?: string | null;
+	date?: string;
+	amount?: number | string;
+	itbis?: number | string;
+	categoryId?: string;
+	description?: string;
+	ncf?: string | null;
+	docNumber?: string | null;
+	paymentMethodId?: string;
+	notes?: string | null;
+	type?: 'SERVICES' | 'PRODUCTS';
+	document?: DocumentPickerAsset & { base64: string; } | null;
+	photo?: ImagePickerAsset | null;
 }
 
 export interface ExpenseCategoryProps {

@@ -5,6 +5,7 @@ import { Portal } from 'react-native-portalize';
 import { Image, ImageSource } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
 
 import Space from '@/constants/Space';
 import Colors from '@/constants/Colors';
@@ -13,7 +14,7 @@ import { Button } from '@/components';
 
 interface OnChangeParamsProps {
 	photo: ImagePicker.ImagePickerAsset | null;
-	document: DocumentPicker.DocumentPickerAsset | null;
+	document: DocumentPicker.DocumentPickerAsset & { base64: string; } | null;
 }
 
 interface AttachDocumentProps {
@@ -24,7 +25,7 @@ const AttachDocument = ({ onChange }: AttachDocumentProps) => {
 	const ModalRef = useRef<Modalize>(null);
 	const [visible, setVisible] = useState(false);
 	const [photo, setPhoto] = useState<ImagePicker.ImagePickerAsset | null>(null);
-	const [document, setDocument] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
+	const [document, setDocument] = useState<DocumentPicker.DocumentPickerAsset & { base64: string } | null>(null);
 
 	useEffect(() => {
 		if (visible) {
@@ -109,7 +110,15 @@ const AttachDocument = ({ onChange }: AttachDocumentProps) => {
 			return;
 		}
 
-		setDocument(assets[0]);
+		const [file] = assets;
+		const base64 = await FileSystem.readAsStringAsync(file.uri, {
+			encoding: FileSystem.EncodingType.Base64
+		});
+
+		setDocument({
+			...file,
+			base64
+		});
 	}
 
 	if (photo) {

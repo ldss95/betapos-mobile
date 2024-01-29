@@ -1,20 +1,26 @@
 import { useState } from 'react';
-import { DocumentPickerAsset } from 'expo-document-picker';
-import { ImagePickerAsset } from 'expo-image-picker';
+import { z } from 'zod';
 
 import useErrorHandling from '@/hooks/useError';
 import { useFetchProviders } from '@/hooks/useProviders';
-import { Button, DatePicker, Input, ScreenContainer, ScreenHeader, Select } from '@/components';
-import { useFetchExpensesCategories, useFetchExpensesPaymentMethods, useSaveExpense } from '@/hooks/useExpenses';
+import {
+	Button,
+	DatePicker,
+	Input,
+	ScreenContainer,
+	ScreenHeader,
+	Select
+} from '@/components';
+import {
+	useFetchExpensesCategories,
+	useFetchExpensesPaymentMethods,
+	useSaveExpense
+} from '@/hooks/useExpenses';
 import AttachDocument from './components/AttachDocument';
-import { ExpenseProps } from '@/types/expense';
 import { showAlert } from '@/components/Alert';
 import { RootStackScreenProps } from '@/types/routes';
-
-interface DataProps extends ExpenseProps {
-	photo?: ImagePickerAsset | null;
-	document?: DocumentPickerAsset | null;
-}
+import { format } from '@/utils/helpers';
+import { SaveExpenseParams } from '@/types/expense';
 
 export default function SaveExpenseScreen({ navigation }: RootStackScreenProps<'SaveExpense'>) {
 	const [paymentMethods, loadingPM, errorPM] = useFetchExpensesPaymentMethods();
@@ -28,73 +34,65 @@ export default function SaveExpenseScreen({ navigation }: RootStackScreenProps<'
 		error
 	);
 
-	const [data, setData] = useState<DataProps>({} as DataProps);
+	const [data, setData] = useState<SaveExpenseParams>({});
 
 	async function handleSave() {
-		if (!data.description || data.description.replace(/ /g, '') === '') {
+		const schema = z.object({
+			description: z.string({ required_error: 'Olvidaste agregar una descripción.' }),
+			amount: z.preprocess(
+				(val) => Number(`${val}`.replace(/\D/g, '')),
+				z.number().min(1, 'Olvidaste agregar el monto de la factura.')
+			),
+			itbis: z.preprocess(
+				(val) => val && Number(`${val}`.replace(/\D/g, '')),
+				z.number({ required_error: 'Olvidaste agregar el ITBIS de la factura, puede ser 0.' }).min(0, )
+			),
+			date: z.string({ required_error: 'Olvidaste seleccioinar la fecha de la factura.' }),
+			paymentMethodId: z.string({ required_error: 'Olvidaste seleccionar el método de pago de de la factura.' }),
+			type: z.string({ required_error: 'Olvidaste seleccionar el tipo de factura.' }),
+			ncf: z.string().length(13, 'Comprobante Invalido').optional().nullable()
+		});
+
+		const res = schema.safeParse(data)
+		if (!res.success) {
+			const [{ message }] = res.error.issues;
 			return showAlert({
-				title: 'Falta Nombre / Descriopcion',
+				title: message,
 				type: 'warning',
 				description: ''
 			});
 		}
 
-		if (!data.amount) {
-			return showAlert({
-				title: 'Falta Monto',
-				type: 'warning',
-				description: ''
-			});
-		}
+		save(
+			{
+				...data,
+				amount: +`${data?.amount || ''}`.replace(/,/g, ''),
+				itbis: +`${data?.itbis || ''}`.replace(/,/g, '')
+			},
+			() => {
+				showAlert({
+					title: 'Listo!',
+					type: 'success',
+					description: 'Tu factura / gasto ha sido guardado con exito'
+				});
 
-		if (!data.date) {
-			return showAlert({
-				title: 'Falta Fecha',
-				type: 'warning',
-				description: ''
-			});
-		}
+				navigation.reset({
+					index: 0,
+					routes: [{
+						name: 'Root',
+						params: {
+							screen: 'Expenses'
+						}
+					}]
+				});
+		});
+	}
 
-		if (!data.paymentMethodId) {
-			return showAlert({
-				title: 'Falta Método de pago',
-				type: 'warning',
-				description: ''
-			});
-		}
-
-		if (!data.type) {
-			return showAlert({
-				title: 'Falta Tipo',
-				type: 'warning',
-				description: ''
-			});
-		}
-
-		if (data.itbis === undefined) {
-			return showAlert({
-				title: 'Falta ITBIS',
-				type: 'warning',
-				description: ''
-			});
-		}
-
-		save(data, () => {
-			showAlert({
-				title: 'Listo!',
-				type: 'success',
-				description: 'Tu factura / gasto ha sido guardado con exito'
-			});
-
-			navigation.reset({
-				index: 0,
-				routes: [{
-					name: 'Root',
-					params: {
-						screen: 'Expenses'
-					}
-				}]
-			});
+	function handleAmountChange(key: string, value: string) {
+		const decimal = Number(value.replace(/\D/g, '')) / 100;
+		setData({
+			...data,
+			[key]: format.cash(decimal, 2)
 		});
 	}
 
@@ -110,15 +108,17 @@ export default function SaveExpenseScreen({ navigation }: RootStackScreenProps<'
 
 			<Input
 				label='Monto'
+				value={`${data?.amount ?? ''}`}
 				keyboardType='decimal-pad'
-				onChangeText={(amount) => setData({ ...data, amount: Number(amount) || 0 })}
+				onChangeText={(amount) => handleAmountChange('amount', amount)}
 				required
 			/>
 
 			<Input
 				label='ITBIS'
 				keyboardType='decimal-pad'
-				onChangeText={(itbis) => setData({ ...data, itbis: Number(itbis) })}
+				value={`${data?.itbis ?? ''}`}
+				onChangeText={(itbis) => handleAmountChange('itbis', itbis)}
 				required
 			/>
 

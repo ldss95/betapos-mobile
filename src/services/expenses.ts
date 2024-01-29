@@ -1,10 +1,12 @@
 import dayjs from 'dayjs';
+import * as Crypto from 'expo-crypto';
 
 import {
 	ExpenseCategoryProps,
 	ExpensePaymentMethodProps,
 	ExpenseProps,
-	ExpensesFilter
+	ExpensesFilter,
+	SaveExpenseParams
 } from '@/types/expense';
 import http from '@/utils/http';
 
@@ -41,6 +43,30 @@ export async function fetchExpensesCategories() {
 	return data;
 }
 
-export async function saveExpense(data: ExpenseProps) {
-	await http.post('/expenses', data);
+export async function saveExpense(data: SaveExpenseParams) {
+	let file;
+	if (data?.document) {
+		const extension = data.document.name.split('.').pop();
+
+		file = {
+			base64: data.document.base64,
+			type: data.document.mimeType,
+			name: `${Crypto.randomUUID()}.${extension}`
+		};
+	}
+
+	if (data?.photo) {
+		const extension = data.photo.uri.split('.').pop();
+
+		file = {
+			base64: data.photo.base64,
+			type: `image/${extension}`,
+			name: `${Crypto.randomUUID()}.${extension}`
+		};
+	}
+
+	await http.post<{ id: string; }>('/expenses', {
+		...data,
+		file
+	});
 }

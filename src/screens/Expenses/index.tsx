@@ -43,7 +43,7 @@ export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expen
 		return expenses.filter(({ description, docNumber, category }) => (
 			description.toLowerCase().includes(search.toLowerCase()) ||
 			docNumber?.toLowerCase()?.includes(search.toLowerCase()) ||
-			category.name.toLowerCase().includes(search.toLowerCase())
+			category?.name?.toLowerCase()?.includes(search.toLowerCase())
 		))
 	}, [search, expenses]);
 	useErrorHandling(error);
@@ -96,7 +96,7 @@ export default function ExpensesScreen({ navigation }: RootTabScreenProps<'Expen
 					<ExpenseCard
 						key={id}
 						time={dayjs(date).format('DD[\n]MMM')}
-						category={category.name}
+						category={category?.name || ''}
 						description={description}
 						amount={amount}
 					/>
