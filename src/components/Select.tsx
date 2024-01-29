@@ -112,7 +112,10 @@ const Select = ({ options, label, onDone, required = false, ...props }: DropDown
 						backgroundColor: Colors.BgCard,
 						padding: 20
 					}}
-					onClose={() => setVisible(false)}
+					onClose={() => {
+						setVisible(false);
+						selected.length > 0 && onDone && onDone(selected);
+					}}
 					scrollViewProps={{ showsVerticalScrollIndicator: false }}
 					HeaderComponent={
 						<View style={styles.header}>
