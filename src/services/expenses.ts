@@ -40,3 +40,7 @@ export async function fetchExpensesCategories() {
 	const { data } = await http.get<ExpenseCategoryProps[]>('/expenses/categories');
 	return data;
 }
+
+export async function saveExpense(data: ExpenseProps) {
+	await http.post('/expenses', data);
+}

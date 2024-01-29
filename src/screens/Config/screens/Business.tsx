@@ -44,7 +44,6 @@ export default function BusinessScreen() {
 		if (!base64) {
 			return;
 		}
-		console.log(base64.substring(0, 100))
 
 		const extension = uri.split('.').pop();
 		setModifiedBusinessData({
