@@ -82,7 +82,12 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 
 			<BiometricAuthButton />
 
-			<Button onPress={startLogin} loading={loading} type='primary'>
+			<Button
+				onPress={startLogin}
+				loading={loading}
+				disabled={loading}
+				type='primary'
+			>
 				Iniciar Sesión
 			</Button>
 		</ScreenContainer>
