@@ -24,7 +24,7 @@ type UseSalesSummaryType = [
 
 export const useSalesSummary = (): UseSalesSummaryType => {
 	const session = useSessionStore(({ session }) => session);
-    const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<SummaryProps | null>(null);
 	const [error, setError] = useState<Error | null>(null);
 
@@ -46,5 +46,5 @@ export const useSalesSummary = (): UseSalesSummaryType => {
 		};
 	}, [session]);
 
-    return [data, loading, error];
+	return [data, loading, error];
 }

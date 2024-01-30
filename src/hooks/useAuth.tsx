@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform, Text } from 'react-native';
 import { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthenticationType } from 'expo-local-authentication';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useNavigation } from '@react-navigation/native';
+import { io } from 'socket.io-client';
 
 import { changePassword, getAuthToken, login, loginBiometric, logout } from '@/services/auth';
 import { useSessionStore } from '@/store/session';
@@ -211,4 +212,46 @@ export const useToggleBiometricAuth = (): UseToggleBiometricLoginType => {
 	}
 
 	return [toggleBiometricAuth, loading, error];
+}
+
+const socket = io(process.env.EXPO_PUBLIC_API_URL!, {
+	autoConnect: false,
+	transports: ['websocket']
+});
+
+type UseTotpTokentype = [
+	string | null,
+	number | null,
+	boolean,
+	Error | null
+];
+
+export const useTotpToken = (): UseTotpTokentype => {
+	const session = useSessionStore(({ session }) => session);
+	const [loading, setLoading] = useState(true);
+	const [token, setToken] = useState<string | null>(null);
+	const [remaining, setRemaining] = useState<number | null>(null);
+	const [error, setError] = useState<Error | null>(null);
+
+	useEffect(() => {
+		if (!session) {
+			console.log('Sin sesion')
+			return;
+		}
+
+		socket.on('connect', () => socket.emit('listen-totp', session.id));
+		socket.on('totp-token', ({ token, remaining }) => {
+			setToken(token);
+			setRemaining(remaining);
+			setLoading(false);
+		});
+		socket.on('error', setError);
+		socket.connect();
+
+		return () => {
+			socket.disconnect();
+		};
+	}, [session]);
+
+	return [token, remaining, loading, error];
 }

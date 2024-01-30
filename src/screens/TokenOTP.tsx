@@ -6,37 +6,24 @@ import { Image } from 'expo-image';
 
 import { Button, ScreenContainer } from '@/components';
 import Colors from '@/constants/Colors';
+import { useTotpToken } from '@/hooks/useAuth';
 
 export default function TokenOtpScreen() {
-	const [code, setCode] = useState('');
 	const [remainTime, setRemainTime] = useState(0);
+	const [token, remaining] = useTotpToken();
 
 	useEffect(() => {
-		setCode(getCode());
-		setRemainTime(60);
+		if (!remaining) {
+			return;
+		}
 
-		const codeInterval = setInterval(() => {
-			setCode(getCode());
-		}, 1000 * 60);
-
-		const timeInterval = setInterval(() => {
-			setRemainTime(remain => remain > 1 ? remain - 1 : 60);
+		setRemainTime(remaining);
+		let interval = setInterval(() => {
+			setRemainTime(remain => remain > 0 ? remain - 1 : 0);
 		}, 1000);
 
-		return () => {
-			clearInterval(codeInterval);
-			clearInterval(timeInterval);
-		}
-	}, []);
-
-	function getCode() {
-		const code = Math.random() * 999999;
-		return Math
-			.round(code)
-			.toString()
-			.replace(/(.{2})/g, '$1 ')
-			.trim();
-	}
+		return () => clearInterval(interval);
+	}, [remaining]);
 
 	return (
 		<ScreenContainer hasBottomTabs>
@@ -51,7 +38,7 @@ export default function TokenOtpScreen() {
 				</View>
 
 				<View>
-					<Text style={styles.code}>{code}</Text>
+					<Text style={styles.code}>{token ? token?.match(/.{1,2}/g)?.join(' ') : '- - -  - - -'}</Text>
 					<Text style={{ fontSize: 16, color: '#FFF', fontWeight: '300', textAlign: 'center' }}>
 						Expira en
 						<Text style={{ fontWeight: 'bold', color: Colors.ColorSecondary }}> {remainTime} </Text>
@@ -63,7 +50,7 @@ export default function TokenOtpScreen() {
 					<Button
 						medium
 						icon={require('@/assets/icons/directbox-send.png')}
-						onPress={() => Share.share({ message: `Token Beta-POS\n${code}` })}
+						onPress={() => Share.share({ message: `Token Beta-POS\n${token}` })}
 					>
 						Compartir
 					</Button>
@@ -73,7 +60,7 @@ export default function TokenOtpScreen() {
 						type='primary'
 						icon={require('@/assets/icons/document-copy.png')}
 						onPress={async () => {
-							await Clipboard.setStringAsync(code.replace(/\s/g, ''));
+							token && await Clipboard.setStringAsync(token.replace(/\s/g, ''));
 							Toast.show('Código copiado', {
 								position: Toast.positions.BOTTOM,
 								hideOnPress: true
