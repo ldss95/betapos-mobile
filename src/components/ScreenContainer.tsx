@@ -38,7 +38,6 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 				showsVerticalScrollIndicator={false}
 			>
 				{children}
-				<SafeAreaView edges={['bottom']} />
 			</ScrollView>
 		</View>
 	)
