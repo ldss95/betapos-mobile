@@ -26,3 +26,7 @@ export enum BiometricAuthTokenType {
 	FaceUnlock = 'FACE_UNLOCK'
 }
 
+export interface CodeValidationResponse {
+	isValid: boolean;
+	expired: boolean;
+}

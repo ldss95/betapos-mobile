@@ -7,11 +7,12 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 
-import { changePassword, getAuthToken, login, loginBiometric, logout } from '@/services/auth';
+import { changePassword, getAuthToken, login, loginBiometric, logout, requestResetPasswordEmail, verifyResetPasswordCode } from '@/services/auth';
 import { useSessionStore } from '@/store/session';
-import { BiometricAuthTokenType } from '@/types/auth';
+import { BiometricAuthTokenType, CodeValidationResponse } from '@/types/auth';
 import { ApiError } from '@/types/errors';
 import { showAlert } from '@/components/Alert';
+import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
 
 type UseLoginType = [
 	(email: string, password: string, onDone?: () => void) => void,
@@ -254,4 +255,60 @@ export const useTotpToken = (): UseTotpTokentype => {
 	}, [session]);
 
 	return [token, remaining, loading, error];
+}
+
+type UseRequestPasswordResetEmailType = [
+	(email: string, onDone?: () => void) => void,
+	boolean,
+	ApiError | null
+];
+
+export const useRequestResetPasswordEmail = (): UseRequestPasswordResetEmailType => {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<ApiError | null>(null);
+
+	async function handleRequest(email: string, onDone?: () => void) {
+		try {
+			setLoading(true);
+			setError(null);
+			await requestResetPasswordEmail(email);
+			onDone && onDone();
+		} catch (error) {
+			setError(error as ApiError);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return [handleRequest, loading, error];
+}
+
+type UseVerifyResetPasswordCodeType = [
+	(
+		email: string,
+		code: string,
+		onDone?: (params: CodeValidationResponse) => void
+	) => void,
+	boolean,
+	ApiError | null
+];
+
+export const useVerifyResetPasswordCode = (): UseVerifyResetPasswordCodeType => {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<ApiError | null>(null);
+
+	async function handleRequest(email: string, code: string, onDone?: (params: CodeValidationResponse) => void) {
+		try {
+			setLoading(true);
+			setError(null);
+			const res = await verifyResetPasswordCode(email, code)
+			onDone && onDone(res);
+		} catch (error) {
+			setError(error as ApiError);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return [handleRequest, loading, error];
 }

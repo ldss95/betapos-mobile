@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { Dayjs } from 'dayjs';
 
 declare global {
 	namespace ReactNavigation {
@@ -21,7 +22,10 @@ export type RootStackParamList = {
 	ChangePassword: undefined;
 	ResetPassword: undefined;
 	ForgotPassword: undefined;
-	VerifyResetPasswordCode: undefined;
+	VerifyResetPasswordCode: {
+		email: string;
+		sentAt: Dayjs;
+	};
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
