@@ -1,5 +1,5 @@
 import { ReactElement, memo } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Colors from '@/constants/Colors';
@@ -24,20 +24,25 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 			}}
 		>
 			<SafeAreaView edges={['top']} />
-			<ScrollView
-				style={{ padding: 20 }}
-				contentContainerStyle={[
-					styles.body,
-					{
-						...(justifySpaceBetween && { justifyContent: 'space-between' }),
-						...(!hasBottomTabs && { paddingBottom: edges.bottom + 40 }),
-						...(hasBottomTabs && { paddingBottom: 70 })
-					}
-				]}
-				showsVerticalScrollIndicator={false}
+			<KeyboardAvoidingView
+      			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+				style={{ flex: 1 }}
 			>
-				{children}
-			</ScrollView>
+				<ScrollView
+					style={{ padding: 20 }}
+					contentContainerStyle={[
+						styles.body,
+						{
+							...(justifySpaceBetween && { justifyContent: 'space-between' }),
+							...(!hasBottomTabs && { paddingBottom: edges.bottom + 40 }),
+							...(hasBottomTabs && { paddingBottom: 70 })
+						}
+					]}
+					showsVerticalScrollIndicator={false}
+				>
+					{children}
+				</ScrollView>
+			</KeyboardAvoidingView>
 		</View>
 	)
 };
