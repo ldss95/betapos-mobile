@@ -1,10 +1,9 @@
 import { ReactElement, memo } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Platform } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Colors from '@/constants/Colors';
 const { height } = Dimensions.get('window');
-
 interface ScreenContainerProps {
 	children?: ReactElement[] | ReactElement;
 	hasBottomTabs?: boolean;
@@ -16,12 +15,13 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 
 	return (
 		<View
-			style={[
-				styles.container,
-				{
-					...(hasBottomTabs && { paddingBottom: 50 })
-				}
-			]}
+			style={{
+				height: (Platform.OS === 'android')
+					? height + edges.bottom + edges.top
+					: height,
+				...(hasBottomTabs && { paddingBottom: 50 }),
+				backgroundColor: Colors.BgPrimary,
+			}}
 		>
 			<SafeAreaView edges={['top']} />
 			<ScrollView
@@ -29,9 +29,8 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 				contentContainerStyle={[
 					styles.body,
 					{
-						flexGrow: 1,
 						...(justifySpaceBetween && { justifyContent: 'space-between' }),
-						...(!hasBottomTabs && { paddingBottom: edges.bottom }),
+						...(!hasBottomTabs && { paddingBottom: edges.bottom + 40 }),
 						...(hasBottomTabs && { paddingBottom: 70 })
 					}
 				]}
@@ -44,11 +43,8 @@ const ScreenContainer = ({ children, justifySpaceBetween, hasBottomTabs }: Scree
 };
 
 const styles = StyleSheet.create({
-	container: {
-		height,
-		backgroundColor: Colors.BgPrimary,
-	},
 	body: {
+		flexGrow: 1,
 		gap: 20
 	}
 });
