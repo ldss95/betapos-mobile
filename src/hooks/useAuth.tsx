@@ -236,7 +236,6 @@ export const useTotpToken = (): UseTotpTokentype => {
 
 	useEffect(() => {
 		if (!session) {
-			console.log('Sin sesion')
 			return;
 		}
 

@@ -9,3 +9,4 @@ export { default as Alert } from './Alert';
 export { default as Skeleton } from './Skeleton';
 export { default as Avatar } from './Avatar';
 export { default as ScreenHeader } from './ScreenHeader';
+export { default as FullScreenLoading } from './FullScreenLoading';

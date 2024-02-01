@@ -1,11 +1,11 @@
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { useEffect } from 'react';
 import { Image } from 'expo-image';
 
 import SalesSummaryCard from './components/SalesSummaryCard';
 import MicroData from './components/MicroData';
 import ShiftSummary from './components/ShiftSummary';
-import { RenderIf, ScreenContainer } from '@/components';
+import { FullScreenLoading, RenderIf, ScreenContainer } from '@/components';
 import { useFetchShifts } from '@/hooks/useShifts';
 import { useSalesSummary } from '@/hooks/useSalesSummary';
 import { useFetchPurchasesPendingToPayAmount } from '@/hooks/usePurchases';
@@ -106,6 +106,18 @@ export default function HomeScreen() {
 					))
 				}
 			</View>
+
+			<FullScreenLoading
+				visible={
+					Platform.OS === 'android' &&
+					(
+						loadingAR ||
+						loadingPTP ||
+						loadingShifts ||
+						loadingSummary
+					)
+				}
+			/>
 		</ScreenContainer>
 	)
 }
