@@ -9,6 +9,7 @@ import Space from '@/constants/Space';
 import { useVerifyResetPasswordCode } from '@/hooks/useAuth';
 import useErrorHandling from '@/hooks/useError';
 import { showAlert } from '@/components/Alert';
+import { CodeValidationResponse } from '@/types/auth';
 
 export default function VerifyResetPasswordCodeScreen({ navigation, route }: RootStackScreenProps<'VerifyResetPasswordCode'>) {
 	const { email, sentAt } = route.params;
@@ -54,26 +55,31 @@ export default function VerifyResetPasswordCodeScreen({ navigation, route }: Roo
 		verify(
 			email,
 			code.join(''),
-			({ isValid, expired }) => {
-				if (expired) {
-					return showAlert({
-						title: 'Código expirado',
-						description: 'El código ya expiró',
-						type: 'warning'
-					});
-				}
-
-				if (!isValid) {
-					return showAlert({
-						title: 'Código invalido',
-						description: 'El código no es correcto',
-						type: 'warning'
-					});
-				}
-
-				navigation.navigate('ResetPassword')
-			}
+			afterVerify
 		);
+	}
+
+	function afterVerify({ isValid, expired }: CodeValidationResponse) {
+		if (expired) {
+			return showAlert({
+				title: 'Código expirado',
+				description: 'El código ya expiró',
+				type: 'warning'
+			});
+		}
+
+		if (!isValid) {
+			return showAlert({
+				title: 'Código invalido',
+				description: 'El código no es correcto',
+				type: 'warning'
+			});
+		}
+
+		navigation.navigate('ResetPassword', {
+			email,
+			code: code.join('')
+		})
 	}
 
 	return (

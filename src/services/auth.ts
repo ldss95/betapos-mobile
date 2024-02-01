@@ -46,3 +46,11 @@ export async function verifyResetPasswordCode(email: string, code: string) {
 
 	return data;
 }
+
+export async function changePasswordWithOTP(email: string, password: string, code: string) {
+	await http.post('/auth/change-password-with-otp', {
+		email,
+		password,
+		code
+	});
+}

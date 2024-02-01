@@ -7,7 +7,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 
-import { changePassword, getAuthToken, login, loginBiometric, logout, requestResetPasswordEmail, verifyResetPasswordCode } from '@/services/auth';
+import { changePassword, changePasswordWithOTP, getAuthToken, login, loginBiometric, logout, requestResetPasswordEmail, verifyResetPasswordCode } from '@/services/auth';
 import { useSessionStore } from '@/store/session';
 import { BiometricAuthTokenType, CodeValidationResponse } from '@/types/auth';
 import { ApiError } from '@/types/errors';
@@ -311,4 +311,43 @@ export const useVerifyResetPasswordCode = (): UseVerifyResetPasswordCodeType => 
 	}
 
 	return [handleRequest, loading, error];
+}
+
+interface ChangePasswordWithOTPParams {
+	email: string;
+	password: string;
+	code: string;
+}
+
+type UseChangePasswordOTPType = [
+	(
+		params: ChangePasswordWithOTPParams,
+		onDone?: () => void
+	) => void,
+	boolean,
+	ApiError | null
+];
+
+export const useChangePasswordWithOTP = (): UseChangePasswordOTPType => {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<ApiError | null>(null);
+
+	async function handleChange(params: ChangePasswordWithOTPParams, onDone?: () => void) {
+		try {
+			setLoading(true);
+			setError(null);
+			await changePasswordWithOTP(
+				params.email,
+				params.password,
+				params.code
+			);
+			onDone && onDone();
+		} catch (error) {
+			setError(error as ApiError);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return [handleChange, loading, error];
 }

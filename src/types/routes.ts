@@ -20,7 +20,10 @@ export type RootStackParamList = {
 	Billing: undefined;
 	SecurityAndPassword: undefined;
 	ChangePassword: undefined;
-	ResetPassword: undefined;
+	ResetPassword: {
+		email: string;
+		code: string;
+	};
 	ForgotPassword: undefined;
 	VerifyResetPasswordCode: {
 		email: string;
