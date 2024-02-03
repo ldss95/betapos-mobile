@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from 'sentry-expo';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { useNavigationContainerRef } from '@react-navigation/native';
 import { locale } from 'dayjs';
@@ -9,9 +9,9 @@ locale(esLocale);
 
 Sentry.init({
 	dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
-	tracesSampleRate: 1.0,
 	environment: __DEV__ ? 'development' : 'production',
-	enableNative: false
+	enableNative: !__DEV__,
+	enableInExpoDevelopment: true
 });
 
 import Navigation from './src/navigation';
@@ -22,7 +22,7 @@ import { Alert } from '@/components';
 
 function App() {
 	const navigation = useNavigationContainerRef<RootStackParamList>();
-	const setSession = useSessionStore(({ setSession }) => setSession)
+	const setSession = useSessionStore(({ setSession }) => setSession);
 
 	useEffect(() => {
 		if (!navigation) {
@@ -52,4 +52,4 @@ function App() {
 	);
 }
 
-export default Sentry.wrap(gestureHandlerRootHOC(App));
+export default gestureHandlerRootHOC(App);

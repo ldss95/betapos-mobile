@@ -1,27 +1,35 @@
 {
   "expo": {
     "owner": "nativo-digital",
-    "name": "betapos-mobile-app",
-    "slug": "betapos-mobile-app",
-    "version": "1.0.0",
+    "name": "Betapos POS",
+    "slug": "beta-pos",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "betapos",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/splash.png",
-	  "resizeMode": "cover"
+      "resizeMode": "cover"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-	  "infoPlist": {
-		"NSFaceIDUsageDescription": "Permite que puedas iniciar sesion usando Face ID en vez de contraseña, para agilizar el proceso."
-	  }
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Permite que $(PRODUCT_NAME) use Face ID."
+      },
+	  "bundleIdentifier": "com.betapos.app"
     },
     "android": {
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO"
+      ],
+	  "package": "com.betapos.app"
     },
     "plugins": [
       "sentry-expo",
@@ -35,10 +43,10 @@
         "expo-image-picker",
         {
           "photosPermission": "Permite que $(PRODUCT_NAME) acceda a tus fotos para poder cambiar tu foto de perfil o logo.",
-		  "cameraPermission": "Permite que $(PRODUCT_NAME) acceda a tu cámara para poder tomar fotos de tus facturas al registrar gastos."
+          "cameraPermission": "Permite que $(PRODUCT_NAME) acceda a tu cámara para poder tomar fotos de tus facturas al registrar gastos."
         }
       ],
-	  [
+      [
         "expo-document-picker",
         {
           "iCloudContainerEnvironment": "Permite que $(PRODUCT_NAME) acceda a tus documentos para poder adjuntar PDF al registrar tus gastos."
@@ -58,6 +66,11 @@
           }
         }
       ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b959cd1d-0840-401e-9698-7174bd58d8c4"
+      }
     }
   }
 }
