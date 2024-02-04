@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Sentry from 'sentry-expo';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { useNavigationContainerRef } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
 import { locale } from 'dayjs';
 import esLocale from 'dayjs/locale/es-do';
 locale(esLocale);
@@ -19,10 +20,29 @@ import { RootStackParamList } from '@/types/routes';
 import { Unauthorized$ } from '@/utils/helpers';
 import { useSessionStore } from '@/store/session';
 import { Alert } from '@/components';
+import { handleNewNotification } from '@/utils/notifications';
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+	})
+});
 
 function App() {
 	const navigation = useNavigationContainerRef<RootStackParamList>();
 	const setSession = useSessionStore(({ setSession }) => setSession);
+
+	useEffect(() => {
+		const notificationListener = Notifications.addNotificationReceivedListener(handleNewNotification);
+		const responseListener = Notifications.addNotificationResponseReceivedListener(handleNewNotification);
+
+		return () => {
+			Notifications.removeNotificationSubscription(notificationListener);
+			Notifications.removeNotificationSubscription(responseListener);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (!navigation) {

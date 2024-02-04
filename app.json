@@ -3,7 +3,7 @@
     "owner": "nativo-digital",
     "name": "Betapos POS",
     "slug": "beta-pos",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "betapos",
@@ -29,7 +29,8 @@
         "android.permission.USE_FINGERPRINT",
         "android.permission.RECORD_AUDIO"
       ],
-	  "package": "com.betapos.app"
+	  "package": "com.betapos.app",
+	  "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "sentry-expo",
@@ -51,7 +52,8 @@
         {
           "iCloudContainerEnvironment": "Permite que $(PRODUCT_NAME) acceda a tus documentos para poder adjuntar PDF al registrar tus gastos."
         }
-      ]
+      ],
+	  "expo-notifications"
     ],
     "experiments": {
       "tsconfigPaths": true
@@ -62,7 +64,7 @@
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
             "organization": "nativo-digital",
-            "project": "beta-pos-mobile"
+            "project": "betapos-mobile"
           }
         }
       ]

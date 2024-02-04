@@ -13,6 +13,7 @@ import { BiometricAuthTokenType, CodeValidationResponse } from '@/types/auth';
 import { ApiError } from '@/types/errors';
 import { showAlert } from '@/components/Alert';
 import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
+import { setUpNotifications } from '@/services/notifications';
 
 type UseLoginType = [
 	(email: string, password: string, onDone?: () => void) => void,
@@ -32,6 +33,7 @@ export const useLogin = (): UseLoginType => {
 			setSession(user);
 			await AsyncStorage.setItem('token', token);
 			await AsyncStorage.setItem('last_user_email', email);
+			await setUpNotifications();
 			onDone && onDone();
 		} catch (error) {
 			setError(error as AxiosError<{ message: string }>);
@@ -64,6 +66,7 @@ export const useLoginBiometric = (): UseLoginBiometricType => {
 			const { user, token } = await loginBiometric(biometricToken);
 			setSession(user);
 			await AsyncStorage.setItem('token', token);
+			await setUpNotifications();
 			onDone && onDone();
 		} catch (error) {
 			setError(error as AxiosError<{ message: string }>);

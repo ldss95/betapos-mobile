@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1016025935284",
+    "project_id": "betapos-3a19a",
+    "storage_bucket": "betapos-3a19a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016025935284:android:db4d03ebb46b1b13be56e1",
+        "android_client_info": {
+          "package_name": "com.betapos.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016025935284-t4mgn95ssfciqruusda7ngvh24itbdbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtNIGERpuFHHv3C0Geq8G7XuWBdO5UQLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016025935284-t4mgn95ssfciqruusda7ngvh24itbdbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
