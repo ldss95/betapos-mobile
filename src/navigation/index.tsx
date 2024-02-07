@@ -25,6 +25,7 @@ import ChangePasswordScreen from '@/screens/Config/screens/ChangePassword';
 import ForgotPasswordScreen from '@/screens/Auth/ForgottenPassword';
 import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
 import ResetPasswordScreen from '@/screens/Auth/ResetPassword';
+import EnableBiometricAuthScreen from '@/screens/Auth/EnableBiometricAuth';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -102,6 +103,11 @@ function RootNavigator() {
 			<Stack.Screen
 				name='ResetPassword'
 				component={ResetPasswordScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='EnableBiometricAuth'
+				component={EnableBiometricAuthScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

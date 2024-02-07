@@ -10,11 +10,13 @@ import BiometricAuthButton from './components/BiometricAuthButton';
 import { RootStackScreenProps } from '@/types/routes';
 import useErrorHandling from '@/hooks/useError';
 import { showAlert } from '@/components/Alert';
+import { useBiometric } from '@/hooks/useBiometric';
 
 export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
 	const [login, loading, error] = useLogin();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [hasBiometric] = useBiometric();
 	useErrorHandling(error);
 
 	useEffect(() => {
@@ -40,14 +42,23 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Login'
 			});
 		}
 
-		login(
-			email,
-			password,
-			() => navigation.reset({
+		login(email, password, afterLogin);
+	}
+
+	async function afterLogin() {
+		const enableBiometricAuthWasShown = await AsyncStorage.getItem('enable_biometric_auth_was_shown');
+
+		if (enableBiometricAuthWasShown || !hasBiometric) {
+			navigation.reset({
 				index: 0,
 				routes: [{ name: 'Root' }]
-			})
-		);
+			});
+		} else {
+			navigation.reset({
+				index: 0,
+				routes: [{ name: 'EnableBiometricAuth' }]
+			});
+		}
 	}
 
 	return (

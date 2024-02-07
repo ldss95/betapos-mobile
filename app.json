@@ -3,7 +3,7 @@
     "owner": "nativo-digital",
     "name": "Betapos POS",
     "slug": "beta-pos",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "betapos",
@@ -20,7 +20,7 @@
       "infoPlist": {
         "NSFaceIDUsageDescription": "Permite que $(PRODUCT_NAME) use Face ID."
       },
-	  "bundleIdentifier": "com.betapos.app"
+      "bundleIdentifier": "com.betapos.app"
     },
     "android": {
       "versionCode": 1,
@@ -29,8 +29,8 @@
         "android.permission.USE_FINGERPRINT",
         "android.permission.RECORD_AUDIO"
       ],
-	  "package": "com.betapos.app",
-	  "googleServicesFile": "./google-services.json"
+      "package": "com.betapos.app",
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "sentry-expo",
@@ -53,7 +53,7 @@
           "iCloudContainerEnvironment": "Permite que $(PRODUCT_NAME) acceda a tus documentos para poder adjuntar PDF al registrar tus gastos."
         }
       ],
-	  "expo-notifications"
+      "expo-notifications"
     ],
     "experiments": {
       "tsconfigPaths": true
