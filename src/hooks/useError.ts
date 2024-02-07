@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import * as Sentry from 'sentry-expo';
 
 import { ApiError } from '@/types/errors';
 import { extractTitleAndDescriptionFromErrorMessage } from '@/utils/helpers';
@@ -32,6 +33,7 @@ const useErrorHandling = (error: ApiError | null, defaultUnknownErrorMessage?: s
 				description: defaultUnknownErrorMessage || 'No pudimos procesar tu solicitud, por favor inténtelo más tarde',
 				type: 'error'
 			});
+			Sentry.Native.captureException(error);
 		}
 	}, [error]);
 };

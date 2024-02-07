@@ -4,15 +4,22 @@ import { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthenticationType } from 'expo-local-authentication';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 
-import { changePassword, changePasswordWithOTP, getAuthToken, login, loginBiometric, logout, requestResetPasswordEmail, verifyResetPasswordCode } from '@/services/auth';
+import {
+	changePassword,
+	changePasswordWithOTP,
+	getAuthToken,
+	login,
+	loginBiometric,
+	logout,
+	requestResetPasswordEmail,
+	verifyResetPasswordCode
+} from '@/services/auth';
 import { useSessionStore } from '@/store/session';
 import { BiometricAuthTokenType, CodeValidationResponse } from '@/types/auth';
 import { ApiError } from '@/types/errors';
 import { showAlert } from '@/components/Alert';
-import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
 import { setUpNotifications } from '@/services/notifications';
 
 type UseLoginType = [
@@ -162,7 +169,6 @@ const BiometricTypeName: any = {
 }
 
 export const useToggleBiometricAuth = (): UseToggleBiometricLoginType => {
-	const navigation = useNavigation();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<ApiError | null>(null);
 
@@ -181,7 +187,7 @@ export const useToggleBiometricAuth = (): UseToggleBiometricLoginType => {
 				showAlert({
 					title: 'Listo!',
 					description: `${BiometricTypeName[Platform.OS][localAuthType]} desactivado`,
-					type: 'success'
+					type: 'success',
 				});
 				onDone && onDone();
 				return;
@@ -189,25 +195,16 @@ export const useToggleBiometricAuth = (): UseToggleBiometricLoginType => {
 
 			const token = await getAuthToken(tokenTypes[Platform.OS][localAuthType]);
 			await AsyncStorage.setItem('biometric_auth_token', token);
-			await logout();
 			showAlert({
 				title: 'Genial!',
-				description: (
-					<Text style={{ color: '#FFF', textAlign: 'center' }}>
-						Ya puedes iniciar sesion con {BiometricTypeName[Platform.OS][localAuthType]}
-						{'\n'}
-						<Text style={{ fontWeight: 'bold', color: '#FFF' }}>Pruebalo!</Text>
-					</Text>
-				),
-				type: 'success'
+				description: `Ya puedes iniciar sesion con ${BiometricTypeName[Platform.OS][localAuthType]}`,
+				type: 'success',
+				showConfirmButton: true,
+				confirmButtonText: 'Continuar',
+				onConfirm: onDone,
+				onClose: onDone
+
 			});
-			navigation.reset({
-				index: 0,
-				routes: [{
-					name: 'Login'
-				}]
-			});
-			onDone && onDone();
 		} catch (error) {
 			setError(error as ApiError);
 		} finally {

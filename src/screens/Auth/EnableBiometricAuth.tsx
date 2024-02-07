@@ -24,7 +24,8 @@ export default function EnableBiometricAuth({ navigation }: RootStackScreenProps
 	}
 
 	function onPressEnable() {
-		enableBiometric(biometric?.type!, () => {
+		enableBiometric(biometric?.type!, async () => {
+			await AsyncStorage.setItem('enable_biometric_auth_was_shown', 'true');
 			navigation.reset({
 				index: 0,
 				routes: [{ name: 'Root' }]

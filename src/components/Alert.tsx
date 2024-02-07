@@ -16,8 +16,10 @@ interface AlertProps {
 	cancelButtonText?: string;
 	showConfirmButton?: boolean;
 	confirmButtonText?: string;
+	confirmButtonType?: 'primary' | 'secondary' | 'error';
 	onCancel?: () => void;
 	onConfirm?: () => void;
+	onClose?: () => void;
 }
 
 const Alert$ = new Subject<AlertProps>();
@@ -63,7 +65,13 @@ const Alert = () => {
 		>
 			<BlurView style={styles.container}>
 				<View style={styles.body}>
-					<TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
+					<TouchableOpacity
+						style={styles.closeBtn}
+						onPress={() => {
+							setVisible(false);
+							config?.onClose && config.onClose();
+						}}
+					>
 						<Image source={require('@/assets/icons/close-circle.png')} style={{ width: 24, height: 24 }} />
 					</TouchableOpacity>
 
@@ -102,7 +110,7 @@ const Alert = () => {
 							</RenderIf>
 							<RenderIf condition={!!config?.showConfirmButton}>
 								<Button
-									type='error'
+									type={config?.confirmButtonType ?? 'primary'}
 									onPress={() => {
 										config?.onConfirm && config.onConfirm();
 										setVisible(false)

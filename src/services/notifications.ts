@@ -25,7 +25,7 @@ export async function setUpNotifications() {
 
 	pushToken = await getPushToken();
 	if (!pushToken) {
-		return Sentry.Native.captureMessage('No se pudo generar el PushToken');
+		return;
 	}
 
 	await http.post('/users/devices/tokens', {
@@ -36,30 +36,37 @@ export async function setUpNotifications() {
 }
 
 async function getPushToken() {
-	if (!Device.isDevice) {
-		return null;
-	}
+	try {
+		if (!Device.isDevice) {
+			return null;
+		}
 
-	if (Platform.OS === 'android') {
-		await Notifications.setNotificationChannelAsync('default', {
-			name: 'default',
-			importance: Notifications.AndroidImportance.MAX,
-			vibrationPattern: [0, 250, 250, 250],
-			lightColor: '#FF231F7C',
+		if (Platform.OS === 'android') {
+			await Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C',
+			});
+		}
+
+		const { status, canAskAgain } = await Notifications.getPermissionsAsync();
+		if (status !== 'granted' && !canAskAgain) {
+			return null;
+		}
+
+		if (status !== 'granted' && canAskAgain) {
+			await Notifications.requestPermissionsAsync();
+			return getPushToken();
+		}
+
+		const { data: token } = await Notifications.getExpoPushTokenAsync({
+			projectId: 'b00faef6-54f9-4db0-bb23-3696d44035f8'
 		});
-	}
 
-	const { status, canAskAgain } = await Notifications.getPermissionsAsync();
-	if (status !== 'granted' && !canAskAgain) {
+		return token;
+	} catch (error) {
+		Sentry.Native.captureException(error);
 		return null;
 	}
-
-	if (status !== 'granted' && canAskAgain) {
-		await Notifications.requestPermissionsAsync();
-		return getPushToken();
-	}
-
-	const { data: token } = await Notifications.getExpoPushTokenAsync()
-
-	return token;
 }

@@ -40,6 +40,7 @@ export default function SecurityAndPasswordScreen({ navigation }: RootStackScree
 			),
 			cancelButtonText: 'Cancelar',
 			confirmButtonText: 'Eliminar',
+			confirmButtonType: 'error',
 			showCancelButton: true,
 			showConfirmButton: true,
 			onConfirm: () => deleteAccount(() => navigation.reset({
