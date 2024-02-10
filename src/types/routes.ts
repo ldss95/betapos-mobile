@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { Dayjs } from 'dayjs';
+import { ShiftProps } from './shift';
 
 declare global {
 	namespace ReactNavigation {
@@ -30,6 +31,9 @@ export type RootStackParamList = {
 		email: string;
 		sentAt: Dayjs;
 	};
+	Shift: {
+		data: ShiftProps;
+	}
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import dayjs from 'dayjs';
 
 import Colors from '@/constants/Colors';
@@ -14,10 +14,14 @@ interface ShiftSummaryProps {
 		photoUrl?: string;
 	};
 	loading?: boolean;
+	onPress?: () => void;
 }
 
-const ShiftSummary = ({ startedAt, amount, seller, loading }: ShiftSummaryProps) => (
-    <View style={styles.container}>
+const ShiftSummary = ({ startedAt, amount, seller, loading, onPress }: ShiftSummaryProps) => (
+    <TouchableOpacity
+		style={styles.container}
+		onPress={onPress}
+	>
 		<Skeleton active={!!loading} />
 
 		<View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, width: 170 }}>
@@ -31,7 +35,7 @@ const ShiftSummary = ({ startedAt, amount, seller, loading }: ShiftSummaryProps)
 		</View>
 		<Text style={styles.time}>{dayjs('2024-01-01 ' + startedAt).format('hh:mm A')}</Text>
 		<Text style={styles.amount}>$ {format.cash(amount)}</Text>
-	</View>
+	</TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

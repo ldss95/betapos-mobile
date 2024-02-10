@@ -11,8 +11,9 @@ import { useSalesSummary } from '@/hooks/useSalesSummary';
 import { useFetchPurchasesPendingToPayAmount } from '@/hooks/usePurchases';
 import { useFetchAccountsReceivableAmount } from '@/hooks/useSales';
 import useErrorHandling from '@/hooks/useError';
+import { RootStackScreenProps } from '@/types/routes';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: RootStackScreenProps<'Root'>) {
 	const [data, loadingSummary] = useSalesSummary();
 	const [shifts, loadingShifts, errorShifts, reloadShifts] = useFetchShifts();
 	const [pendingToPay, loadingPTP, errorPTP, reloadPTP] = useFetchPurchasesPendingToPayAmount();
@@ -93,15 +94,16 @@ export default function HomeScreen() {
 					/>
 				</RenderIf>
 				{shifts
-					.map(({ id, startTime, totalSold, user }) => (
+					.map((shift) => (
 						<ShiftSummary
-							key={id}
-							startedAt={startTime}
-							amount={totalSold}
+							key={shift.id}
+							startedAt={shift.startTime}
+							amount={shift.totalSold}
 							seller={{
-								name: `${user.firstName} ${user.lastName}`,
-								photoUrl: user.photoUrl
+								name: `${shift.user.firstName} ${shift.user.lastName}`,
+								photoUrl: shift.user.photoUrl
 							}}
+							onPress={() => navigation.navigate('Shift', { data: shift })}
 						/>
 					))
 				}

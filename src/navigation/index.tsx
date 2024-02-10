@@ -26,6 +26,7 @@ import ForgotPasswordScreen from '@/screens/Auth/ForgottenPassword';
 import VerifyResetPasswordCodeScreen from '@/screens/Auth/VerifyResetPasswordCode';
 import ResetPasswordScreen from '@/screens/Auth/ResetPassword';
 import EnableBiometricAuthScreen from '@/screens/Auth/EnableBiometricAuth';
+import ShiftScreen from '@/screens/Shift';
 
 interface NavigationProps {
 	navRef: Ref<NavigationContainerRef<RootStackParamList>>;
@@ -108,6 +109,11 @@ function RootNavigator() {
 			<Stack.Screen
 				name='EnableBiometricAuth'
 				component={EnableBiometricAuthScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Shift'
+				component={ShiftScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
