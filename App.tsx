@@ -35,14 +35,20 @@ function App() {
 	const setSession = useSessionStore(({ setSession }) => setSession);
 
 	useEffect(() => {
-		const notificationListener = Notifications.addNotificationReceivedListener(handleNewNotification);
-		const responseListener = Notifications.addNotificationResponseReceivedListener(handleNewNotification);
+		if (!navigation) {
+			return;
+		}
+
+		const notificationListener = Notifications
+			.addNotificationReceivedListener(event => handleNewNotification(event, navigation));
+		const responseListener = Notifications
+			.addNotificationResponseReceivedListener(event => handleNewNotification(event, navigation));
 
 		return () => {
 			Notifications.removeNotificationSubscription(notificationListener);
 			Notifications.removeNotificationSubscription(responseListener);
 		};
-	}, []);
+	}, [navigation]);
 
 	useEffect(() => {
 		if (!navigation) {
