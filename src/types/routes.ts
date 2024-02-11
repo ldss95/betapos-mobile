@@ -12,7 +12,12 @@ declare global {
 
 export type RootStackParamList = {
 	Loading: undefined;
-	Login: undefined;
+	Login: {
+		afterLogin?: {
+			route: keyof RootStackParamList;
+			params?: any;
+		}
+	};
 	Root: NavigatorScreenParams<RootTabParamList> | undefined;
 	SaveExpense: undefined;
 	Profile: undefined;

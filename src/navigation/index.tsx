@@ -9,6 +9,7 @@ import { Image } from 'expo-image';
 import { RootStackParamList, RootTabParamList } from '@/types/routes';
 import LinkingConfiguration from './LinkingConfiguration';
 import Colors from '@/constants/Colors';
+import { Notification } from '@/components';
 
 import LoginScreen from '@/screens/Auth/Login';
 import HomeScreen from '@/screens/Home';
@@ -36,6 +37,7 @@ export default function Navigation({ navRef }: NavigationProps) {
 		<NavigationContainer linking={LinkingConfiguration} ref={navRef}>
 			<Host>
 				<RootNavigator />
+				<Notification />
 			</Host>
 		</NavigationContainer>
 	);
