@@ -23,7 +23,7 @@ export default function TokenOtpScreen() {
 		}, 1000);
 
 		return () => clearInterval(interval);
-	}, [remaining]);
+	}, [remaining, token]);
 
 	return (
 		<ScreenContainer hasBottomTabs>
